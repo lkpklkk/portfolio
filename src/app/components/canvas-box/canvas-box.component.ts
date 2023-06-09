@@ -4,6 +4,8 @@ import { AfterViewInit } from '@angular/core';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { NavSphere } from './navSphere';
 import { HostListener } from '@angular/core';
+import { ContentTag } from 'src/app/contentTag';
+import { AnimationCorrelatorService } from 'src/app/animation-correlator.service';
 @Component({
   selector: 'app-canvas-box',
   templateUrl: './canvas-box.component.html',
@@ -24,6 +26,8 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
   hovered: { [key: string]: THREE.Intersection } = {};
   raycaster = new THREE.Raycaster();
   navSpheres: NavSphere[] = [];
+  contentTag: ContentTag = ContentTag.NOCONTENT;
+  vectorCameraToTarget: THREE.Vector3 = new THREE.Vector3(0, 0, 0);
 
   cameraSettings = {
     fov: 75,
@@ -39,7 +43,10 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
     maxDistance: 15,
   };
 
-  constructor(private hostRef: ElementRef) {
+  constructor(
+    private hostRef: ElementRef,
+    private animator: AnimationCorrelatorService
+  ) {
     console.log(this.hostRef.nativeElement);
   }
 
@@ -57,9 +64,9 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
 
   addNavSpheres() {
     let navSpheres = [
-      new NavSphere(this),
-      new NavSphere(this),
-      new NavSphere(this),
+      new NavSphere(this, ContentTag.ABOUT),
+      new NavSphere(this, ContentTag.PROJECTS),
+      new NavSphere(this, ContentTag.CONTACT),
     ];
     navSpheres[0].position.set(-1.1, 0.5, 0.1);
     navSpheres[1].position.set(1.1, 0.5, 0.1);
@@ -205,7 +212,13 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
   animate() {
     requestAnimationFrame(() => this.animate());
     this.navSpheres.forEach((navSphere) => {
-      navSphere.gravityPull();
+      if (navSphere.gravityPull()) {
+        // that means I am trying to move here, activate animation of the contents
+        this.animator.uploadAnimationData(
+          navSphere.getContentTag(),
+          navSphere.getVectorToTarget()
+        );
+      }
     });
     this.controls.update();
     this.renderer.render(this.scene, this.camera);
