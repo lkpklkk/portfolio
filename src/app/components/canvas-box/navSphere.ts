@@ -64,7 +64,7 @@ export class NavSphere extends THREE.Mesh {
       );
       projectionOntoPlane = projectionOntoPlane.normalize();
       let nudge = projectionOntoPlane.multiplyScalar(force);
-      console.log(force, nudge);
+      // TODO: adjust the force (i.e. the direction traveled) according to the distance of the camera from the origin
       camera.position.add(nudge);
     }
   }

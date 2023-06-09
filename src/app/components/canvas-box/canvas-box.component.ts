@@ -13,8 +13,8 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
   @ViewChild('canvasElement')
   private canvasElement!: ElementRef;
 
-  private canvasWidth!: number;
-  private canvasHeight!: number;
+  private curCanvaWidth!: number;
+  private curCanvaHeight!: number;
   private boundingRect!: DOMRect;
   scene!: THREE.Scene;
   camera!: THREE.PerspectiveCamera;
@@ -45,8 +45,9 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {}
   ngAfterViewInit() {
-    this.canvasWidth = this.hostRef.nativeElement.clientWidth;
-    this.canvasHeight = this.hostRef.nativeElement.clientHeight;
+    // annoyingly, the canvas element has a border-box sizing, so we have to subtract the border
+    this.curCanvaWidth = this.hostRef.nativeElement.clientWidth - 2;
+    this.curCanvaHeight = this.hostRef.nativeElement.clientHeight - 2;
     this.boundingRect = this.hostRef.nativeElement.getBoundingClientRect();
 
     this.initThreeJsScene();
@@ -112,15 +113,13 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
     this.scene.add(torus, box);
   }
   initThreeJsScene() {
-    console.log(' initThreeJsScene() ');
-    const canvas = this.canvasElement.nativeElement;
-    console.log(this.canvasHeight, this.canvasWidth);
-    canvas.width = this.canvasWidth;
-    canvas.height = this.canvasHeight;
+    this.canvasElement.nativeElement.width = this.curCanvaWidth;
+    this.canvasElement.nativeElement.height = this.curCanvaHeight;
+
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(
       this.cameraSettings.fov,
-      this.canvasWidth / this.canvasHeight,
+      this.curCanvaWidth / this.curCanvaHeight,
       this.cameraSettings.near,
       this.cameraSettings.far
     );
@@ -128,7 +127,7 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
     this.camera.position.z = this.cameraSettings.initialZPosition;
     this.renderer = new THREE.WebGLRenderer({
       antialias: true,
-      canvas: canvas,
+      canvas: this.canvasElement.nativeElement,
       alpha: true,
     });
 
@@ -155,8 +154,8 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
     const mousePosX = event.clientX - this.boundingRect.left;
     const mousePosY = event.clientY - this.boundingRect.top;
     mouse.set(
-      (mousePosX / this.canvasWidth) * 2 - 1,
-      -(mousePosY / this.canvasHeight) * 2 + 1
+      (mousePosX / this.curCanvaWidth) * 2 - 1,
+      -(mousePosY / this.curCanvaHeight) * 2 + 1
     );
     this.raycaster.setFromCamera(mouse, this.camera);
     this.intersects = this.raycaster.intersectObjects(
@@ -191,12 +190,16 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
   onResize(event: Event) {
     // update sizes
     this.boundingRect = this.hostRef.nativeElement.getBoundingClientRect();
-    this.canvasWidth = this.hostRef.nativeElement.clientWidth;
-    this.canvasHeight = this.hostRef.nativeElement.clientHeight;
-    this.canvasElement.nativeElement.width = this.canvasWidth;
-    this.canvasElement.nativeElement.height = this.canvasHeight;
-    this.renderer.setSize(this.canvasWidth, this.canvasHeight);
-    this.camera.aspect = this.canvasWidth / this.canvasHeight;
+
+    // annoyingly, the canvas element has a border-box sizing, so we have to subtract the border
+    this.curCanvaWidth = this.hostRef.nativeElement.clientWidth - 2;
+    this.curCanvaHeight = this.hostRef.nativeElement.clientHeight - 2;
+
+    this.canvasElement.nativeElement.width = this.curCanvaWidth;
+    this.canvasElement.nativeElement.height = this.curCanvaHeight;
+
+    this.renderer.setSize(this.curCanvaWidth, this.curCanvaHeight);
+    this.camera.aspect = this.curCanvaWidth / this.curCanvaHeight;
     this.camera.updateProjectionMatrix();
   }
   animate() {
