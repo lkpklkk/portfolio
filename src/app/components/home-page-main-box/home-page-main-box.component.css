@@ -1,0 +1,6 @@
+:host {
+  display: flex;
+  justify-content: space-between;
+  background-color: rgb(175, 168, 168);
+  flex-basis: 100vh;
+}

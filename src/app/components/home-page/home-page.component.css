@@ -1,0 +1,6 @@
+:host {
+  display: flex;
+  flex-flow: column;
+  max-height: 100vh;
+  flex-direction: column;
+}
