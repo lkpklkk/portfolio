@@ -3,4 +3,11 @@
   flex-flow: column;
   max-height: 100vh;
   flex-direction: column;
+  margin: 0px;
+}
+
+.top-left-banner {
+  position: absolute;
+  top: 0;
+  left: 0;
 }

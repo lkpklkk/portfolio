@@ -4,6 +4,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid black;
+  /* border: 1px solid black; */
   margin: auto;
+}
+
+@media screen and (max-aspect-ratio: 1/1) {
+  :host {
+    width: 100%;
+  }
 }

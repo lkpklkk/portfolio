@@ -7,6 +7,7 @@ import { CanvasBoxComponent } from './components/canvas-box/canvas-box.component
 import { HomePageMainBoxComponent } from './components/home-page-main-box/home-page-main-box.component';
 import { ContentBoxComponent } from './components/content-box/content-box.component';
 import { HomePageComponent } from './components/home-page/home-page.component';
+import { FooterComponent } from './components/footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { HomePageComponent } from './components/home-page/home-page.component';
     CanvasBoxComponent,
     HomePageMainBoxComponent,
     ContentBoxComponent,
-    HomePageComponent
+    HomePageComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,

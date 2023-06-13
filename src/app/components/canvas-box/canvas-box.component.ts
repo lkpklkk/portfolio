@@ -2,10 +2,14 @@ import { Component, ElementRef, Host, OnInit, ViewChild } from '@angular/core';
 import * as THREE from 'three';
 import { AfterViewInit } from '@angular/core';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import { NavSphere } from './navSphere';
+import { navText } from './navText';
 import { HostListener } from '@angular/core';
 import { ContentTag } from 'src/app/contentTag';
 import { AnimationCorrelatorService } from 'src/app/animation-correlator.service';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry';
+import { Font, FontLoader } from 'three/examples/jsm/loaders/FontLoader';
+import * as TWEEN from '@tweenjs/tween.js';
 @Component({
   selector: 'app-canvas-box',
   templateUrl: './canvas-box.component.html',
@@ -14,7 +18,6 @@ import { AnimationCorrelatorService } from 'src/app/animation-correlator.service
 export class CanvasBoxComponent implements OnInit, AfterViewInit {
   @ViewChild('canvasElement')
   private canvasElement!: ElementRef;
-
   private curCanvaWidth!: number;
   private curCanvaHeight!: number;
   private boundingRect!: DOMRect;
@@ -25,9 +28,10 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
   intersects: THREE.Intersection[] = [];
   hovered: { [key: string]: THREE.Intersection } = {};
   raycaster = new THREE.Raycaster();
-  navSpheres: NavSphere[] = [];
+  navSpheres: navText[] = [];
   contentTag: ContentTag = ContentTag.NOCONTENT;
   vectorCameraToTarget: THREE.Vector3 = new THREE.Vector3(0, 0, 0);
+  navFont!: Font;
 
   cameraSettings = {
     fov: 75,
@@ -56,21 +60,34 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
     this.curCanvaWidth = this.hostRef.nativeElement.clientWidth - 2;
     this.curCanvaHeight = this.hostRef.nativeElement.clientHeight - 2;
     this.boundingRect = this.hostRef.nativeElement.getBoundingClientRect();
-
     this.initThreeJsScene();
-
     this.animate();
   }
 
-  addNavSpheres() {
+  addNavText() {
     let navSpheres = [
-      new NavSphere(this, ContentTag.ABOUT),
-      new NavSphere(this, ContentTag.PROJECTS),
-      new NavSphere(this, ContentTag.CONTACT),
+      new navText(
+        this,
+        ContentTag.ABOUT,
+        this.navFont,
+        'About Me',
+        new THREE.Vector3(0, 1, 1.1)
+      ),
+      new navText(
+        this,
+        ContentTag.PROJECTS,
+        this.navFont,
+        'Projects',
+        new THREE.Vector3(0, 0.4, -1.1)
+      ),
+      new navText(
+        this,
+        ContentTag.CREDITS,
+        this.navFont,
+        'Credits',
+        new THREE.Vector3(1, -0.4, -1.1)
+      ),
     ];
-    navSpheres[0].position.set(-1.1, 0.5, 0.1);
-    navSpheres[1].position.set(1.1, 0.5, 0.1);
-    navSpheres[2].position.set(0, 2, 0.1);
     navSpheres.forEach((navSphere) => {
       this.scene.add(navSphere);
       this.navSpheres.push(navSphere);
@@ -120,6 +137,7 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
     this.scene.add(torus, box);
   }
   initThreeJsScene() {
+    // set up scene and camera
     this.canvasElement.nativeElement.width = this.curCanvaWidth;
     this.canvasElement.nativeElement.height = this.curCanvaHeight;
 
@@ -130,8 +148,28 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
       this.cameraSettings.near,
       this.cameraSettings.far
     );
-
     this.camera.position.z = this.cameraSettings.initialZPosition;
+
+    // 3d text loader
+    const fontLoader = new FontLoader();
+
+    fontLoader.load('assets/fonts/Impact_Regular.json', (font) => {
+      this.navFont = font;
+      this.addNavText();
+    });
+    // load models
+    const gltfLoader = new GLTFLoader();
+    gltfLoader.load(
+      'assets/models/scene.gltf',
+      (gltf) => {
+        this.scene.add(gltf.scene);
+      },
+      undefined,
+      function (error) {
+        console.error(error);
+      }
+    );
+
     this.renderer = new THREE.WebGLRenderer({
       antialias: true,
       canvas: this.canvasElement.nativeElement,
@@ -150,9 +188,11 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
     pointLight.position.z = 2;
     this.scene.add(pointLight);
 
+    // add new ambient light
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    this.scene.add(ambientLight);
+
     this.addAxisLines();
-    this.addThreeJsBox();
-    this.addNavSpheres();
   }
 
   @HostListener('window:mousemove', ['$event'])
@@ -173,7 +213,7 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
       const hit = this.intersects.find((hit) => hit.object.uuid === key);
       if (hit === undefined) {
         const hoveredItem = this.hovered[key];
-        if (hoveredItem.object instanceof NavSphere) {
+        if (hoveredItem.object instanceof navText) {
           hoveredItem.object.onPointerOut(hoveredItem);
         }
 
@@ -186,9 +226,19 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
       if (!this.hovered[hit.object.uuid]) {
         this.hovered[hit.object.uuid] = hit;
         // check if the object implements onPointerOver
-        if (hit.object instanceof NavSphere) {
-          (hit.object as NavSphere).onPointerOver(hit);
+        if (hit.object instanceof navText) {
+          (hit.object as navText).onPointerOver(hit);
         }
+      }
+    });
+  }
+
+  @HostListener('window:click', ['$event'])
+  onClick(event: MouseEvent) {
+    this.intersects.forEach((hit) => {
+      // Call onClick
+      if (hit.object instanceof navText) {
+        (hit.object as navText).onClicked(event);
       }
     });
   }
@@ -210,9 +260,11 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
     this.camera.updateProjectionMatrix();
   }
   animate() {
+    let focused = false;
     requestAnimationFrame(() => this.animate());
     this.navSpheres.forEach((navSphere) => {
       if (navSphere.gravityPull()) {
+        focused = true;
         // that means I am trying to move here, activate animation of the contents
         this.animator.uploadAnimationData(
           navSphere.getContentTag(),
@@ -220,6 +272,13 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
         );
       }
     });
+    if (!focused) {
+      this.animator.uploadAnimationData(
+        ContentTag.NOCONTENT,
+        new THREE.Vector3(0, 0, 0)
+      );
+    }
+    TWEEN.update();
     this.controls.update();
     this.renderer.render(this.scene, this.camera);
   }
