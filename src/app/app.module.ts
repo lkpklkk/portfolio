@@ -8,6 +8,7 @@ import { HomePageMainBoxComponent } from './components/home-page-main-box/home-p
 import { ContentBoxComponent } from './components/content-box/content-box.component';
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -16,13 +17,10 @@ import { FooterComponent } from './components/footer/footer.component';
     HomePageMainBoxComponent,
     ContentBoxComponent,
     HomePageComponent,
-    FooterComponent
+    FooterComponent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule
-  ],
+  imports: [BrowserModule, AppRoutingModule, BrowserAnimationsModule],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

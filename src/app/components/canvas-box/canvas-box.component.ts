@@ -28,7 +28,7 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
   intersects: THREE.Intersection[] = [];
   hovered: { [key: string]: THREE.Intersection } = {};
   raycaster = new THREE.Raycaster();
-  navSpheres: navText[] = [];
+  navTexts: navText[] = [];
   contentTag: ContentTag = ContentTag.NOCONTENT;
   vectorCameraToTarget: THREE.Vector3 = new THREE.Vector3(0, 0, 0);
   navFont!: Font;
@@ -68,7 +68,7 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
     let navSpheres = [
       new navText(
         this,
-        ContentTag.ABOUT,
+        ContentTag.ABOUTME,
         this.navFont,
         'About Me',
         new THREE.Vector3(0, 1, 1.1)
@@ -90,7 +90,7 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
     ];
     navSpheres.forEach((navSphere) => {
       this.scene.add(navSphere);
-      this.navSpheres.push(navSphere);
+      this.navTexts.push(navSphere);
     });
   }
   addAxisLines(): void {
@@ -195,53 +195,53 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
     this.addAxisLines();
   }
 
-  @HostListener('window:mousemove', ['$event'])
-  onMouseMove(event: MouseEvent) {
-    const mouse = new THREE.Vector2();
-    const mousePosX = event.clientX - this.boundingRect.left;
-    const mousePosY = event.clientY - this.boundingRect.top;
-    mouse.set(
-      (mousePosX / this.curCanvaWidth) * 2 - 1,
-      -(mousePosY / this.curCanvaHeight) * 2 + 1
-    );
-    this.raycaster.setFromCamera(mouse, this.camera);
-    this.intersects = this.raycaster.intersectObjects(
-      this.scene.children,
-      true
-    );
-    Object.keys(this.hovered).forEach((key) => {
-      const hit = this.intersects.find((hit) => hit.object.uuid === key);
-      if (hit === undefined) {
-        const hoveredItem = this.hovered[key];
-        if (hoveredItem.object instanceof navText) {
-          hoveredItem.object.onPointerOut(hoveredItem);
-        }
+  // @HostListener('window:mousemove', ['$event'])
+  // onMouseMove(event: MouseEvent) {
+  //   const mouse = new THREE.Vector2();
+  //   const mousePosX = event.clientX - this.boundingRect.left;
+  //   const mousePosY = event.clientY - this.boundingRect.top;
+  //   mouse.set(
+  //     (mousePosX / this.curCanvaWidth) * 2 - 1,
+  //     -(mousePosY / this.curCanvaHeight) * 2 + 1
+  //   );
+  //   this.raycaster.setFromCamera(mouse, this.camera);
+  //   this.intersects = this.raycaster.intersectObjects(
+  //     this.scene.children,
+  //     true
+  //   );
+  //   Object.keys(this.hovered).forEach((key) => {
+  //     const hit = this.intersects.find((hit) => hit.object.uuid === key);
+  //     if (hit === undefined) {
+  //       const hoveredItem = this.hovered[key];
+  //       if (hoveredItem.object instanceof navText) {
+  //         hoveredItem.object.onPointerOut(hoveredItem);
+  //       }
 
-        delete this.hovered[key];
-      }
-    });
+  //       delete this.hovered[key];
+  //     }
+  //   });
 
-    this.intersects.forEach((hit) => {
-      // If a hit has not been flagged as hovered we must call onPointerOver
-      if (!this.hovered[hit.object.uuid]) {
-        this.hovered[hit.object.uuid] = hit;
-        // check if the object implements onPointerOver
-        if (hit.object instanceof navText) {
-          (hit.object as navText).onPointerOver(hit);
-        }
-      }
-    });
-  }
+  //   this.intersects.forEach((hit) => {
+  //     // If a hit has not been flagged as hovered we must call onPointerOver
+  //     if (!this.hovered[hit.object.uuid]) {
+  //       this.hovered[hit.object.uuid] = hit;
+  //       // check if the object implements onPointerOver
+  //       if (hit.object instanceof navText) {
+  //         (hit.object as navText).onPointerOver(hit);
+  //       }
+  //     }
+  //   });
+  // }
 
-  @HostListener('window:click', ['$event'])
-  onClick(event: MouseEvent) {
-    this.intersects.forEach((hit) => {
-      // Call onClick
-      if (hit.object instanceof navText) {
-        (hit.object as navText).onClicked(event);
-      }
-    });
-  }
+  // @HostListener('window:click', ['$event'])
+  // onClick(event: MouseEvent) {
+  //   this.intersects.forEach((hit) => {
+  //     // Call onClick
+  //     if (hit.object instanceof navText) {
+  //       (hit.object as navText).onClicked(event);
+  //     }
+  //   });
+  // }
 
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
@@ -260,24 +260,30 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
     this.camera.updateProjectionMatrix();
   }
   animate() {
-    let focused = false;
     requestAnimationFrame(() => this.animate());
-    this.navSpheres.forEach((navSphere) => {
-      if (navSphere.gravityPull()) {
-        focused = true;
-        // that means I am trying to move here, activate animation of the contents
-        this.animator.uploadAnimationData(
-          navSphere.getContentTag(),
-          navSphere.getVectorToTarget()
-        );
+    this.navTexts.forEach((navText) => {
+      if (navText.gravityPull()) {
+        if (!navText.focuesd) {
+          navText.focuesd = true;
+          this.animator.uploadAnimationData(
+            navText.conetentTag,
+            this.camera.position,
+            navText.position,
+            true
+          );
+        }
+      } else {
+        if (navText.focuesd) {
+          navText.focuesd = false;
+          this.animator.uploadAnimationData(
+            navText.conetentTag,
+            this.camera.position,
+            navText.position,
+            false
+          );
+        }
       }
     });
-    if (!focused) {
-      this.animator.uploadAnimationData(
-        ContentTag.NOCONTENT,
-        new THREE.Vector3(0, 0, 0)
-      );
-    }
     TWEEN.update();
     this.controls.update();
     this.renderer.render(this.scene, this.camera);

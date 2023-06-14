@@ -1,27 +1,14 @@
-<div *ngIf="displayNotSelected">
+<!-- <div #neutral [hidden]="currentView !== contentTag.NOCONTENT">
   .................... ............................
   .......................................
   ...............................................
   ..................................
-</div>
+</div> -->
 
-<div *ngIf="displayAboutMe">
-  <div class="content-box">
-    <div class="content-box__title">About Me</div>
-    <div class="content-box__content">
-      <p>
-        I am a software developer with a passion for learning and creating. I
-        have a background in mechanical engineering and have worked in the
-        automotive industry for 5 years. I am currently working as a software
-        developer at a startup in Toronto.
-      </p>
-      <p>
-        I am a self-taught developer and have been learning and building
-        projects for the past 2 years. I am always looking for new opportunities
-        to learn and grow as a developer.
-      </p>
-    </div>
-  </div>
-</div>
+<div #aboutMe [hidden]="currentView !== contentTag.ABOUTME">About me</div>
 
-<div *ngIf="displayProjects">PROEJCTS!!</div>
+<div #projects [hidden]="currentView !== contentTag.PROJECTS">PROEJCTS!!</div>
+
+<div #credits [hidden]="currentView !== contentTag.CREDITS">
+  SPECIAL THANNKS TO
+</div>

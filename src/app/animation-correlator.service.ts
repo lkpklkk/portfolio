@@ -5,28 +5,29 @@ import * as THREE from 'three';
 
 interface AnimationData {
   contentTag: ContentTag;
-  vectorCameraToTarget: THREE.Vector3;
+  cameraPosition: THREE.Vector3;
+  targetPosition: THREE.Vector3;
+  transitionIn: boolean;
 }
 @Injectable({
   providedIn: 'root',
 })
 export class AnimationCorrelatorService {
-  currentContentTag: ContentTag = ContentTag.NOCONTENT;
-  currentVectorCameraToTarget: THREE.Vector3 = new THREE.Vector3(0, 0, 0);
   @Output() animationDataUploaded: EventEmitter<AnimationData> =
     new EventEmitter();
   constructor() {}
 
   uploadAnimationData(
     contentTag: ContentTag,
-    vectorCameraToTarget: THREE.Vector3
+    cameraPosition: THREE.Vector3,
+    targetPosition: THREE.Vector3,
+    transitionIn: boolean
   ) {
-    this.currentContentTag = contentTag;
-    this.currentVectorCameraToTarget = vectorCameraToTarget;
-
     this.animationDataUploaded.emit({
-      contentTag: this.currentContentTag,
-      vectorCameraToTarget: this.currentVectorCameraToTarget,
+      contentTag: contentTag,
+      cameraPosition: cameraPosition,
+      targetPosition: targetPosition,
+      transitionIn: transitionIn,
     });
   }
 }

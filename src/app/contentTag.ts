@@ -1,7 +1,6 @@
 export enum ContentTag {
-  ABOUT = 1,
+  ABOUTME = 1,
   PROJECTS = 2,
-  CONTACT = 3,
-  CREDITS = 4,
-  NOCONTENT = 5,
+  CREDITS = 3,
+  NOCONTENT = 4,
 }

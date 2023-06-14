@@ -1,51 +1,89 @@
-import { Component } from '@angular/core';
+import anime, { set } from 'animejs';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { AnimationCorrelatorService } from 'src/app/animation-correlator.service';
 import { ContentTag } from 'src/app/contentTag';
 import * as THREE from 'three';
+
 @Component({
   selector: 'app-content-box',
   templateUrl: './content-box.component.html',
   styleUrls: ['./content-box.component.css'],
 })
 export class ContentBoxComponent {
-  displayNotSelected = true;
-  displayAboutMe = false;
-  displayProjects = false;
-  displayedContent: string = 'asd';
+  // exposed for html
+  contentTag = ContentTag;
+  @ViewChild('aboutMe') aboutMe!: ElementRef;
+  @ViewChild('projects') projects!: ElementRef;
+  @ViewChild('credits') credits!: ElementRef;
+  @ViewChild('neutral') neutral!: ElementRef;
+
+  animationTargets!: { [key in ContentTag]: ElementRef };
+  currentView: ContentTag = ContentTag.NOCONTENT;
+
   constructor(private animator: AnimationCorrelatorService) {}
-  contentTag: ContentTag = ContentTag.NOCONTENT;
-  vectorCameraToTarget: THREE.Vector3 = new THREE.Vector3(0, 0, 0);
-  ngOnInit() {
+
+  startAnimation(
+    contentTag: ContentTag,
+    cameraPosition: THREE.Vector3,
+    targetPosition: THREE.Vector3,
+    transitionIn: boolean
+  ) {
+    targetPosition = targetPosition.clone().normalize();
+    cameraPosition = cameraPosition.clone().normalize();
+    let direction = new THREE.Vector2(
+      targetPosition.x - cameraPosition.x,
+      targetPosition.y - cameraPosition.y
+    );
+    //
+    // Convert the direction to a 2D angle
+    let angle = Math.atan2(direction.y, direction.x);
+    let translateX = Math.cos(angle) * 20;
+    let translateY = -Math.sin(angle) * 20;
+    if (cameraPosition.z < 0) {
+      translateX = -translateX;
+    }
+    if (transitionIn) {
+      console.log('transition into' + contentTag);
+      this.currentView = contentTag;
+      anime({
+        targets: this.animationTargets[contentTag].nativeElement,
+        translateX: [translateX, 0],
+        translateY: [translateY, 0],
+        opacity: [0, 1],
+        duration: 300,
+        easing: 'easeInOutQuad',
+      });
+    } else {
+      console.log('transition out' + contentTag);
+      anime({
+        targets: this.animationTargets[contentTag].nativeElement,
+        translateX: [0, translateX],
+        translateY: [0, translateY],
+        opacity: [1, 0],
+        duration: 300,
+        easing: 'easeInOutQuad',
+        complete: () => {
+          if (this.currentView == contentTag)
+            this.currentView = ContentTag.NOCONTENT;
+        },
+      });
+    }
+  }
+
+  ngAfterViewInit() {
+    this.animationTargets = {
+      [ContentTag.NOCONTENT]: this.neutral,
+      [ContentTag.ABOUTME]: this.aboutMe,
+      [ContentTag.PROJECTS]: this.projects,
+      [ContentTag.CREDITS]: this.credits,
+    };
+    console.log(this.animationTargets);
     this.animator.animationDataUploaded.subscribe((data) => {
-      this.contentTag = data.contentTag;
-      switch (this.contentTag) {
-        case ContentTag.ABOUT:
-          this.displayNotSelected = false;
-          this.displayAboutMe = true;
-          this.displayProjects = false;
-          break;
-        case ContentTag.PROJECTS:
-          this.displayNotSelected = false;
-          this.displayAboutMe = false;
-          this.displayProjects = true;
-          break;
-        case ContentTag.CONTACT:
-          this.displayNotSelected = false;
-          this.displayAboutMe = false;
-          this.displayProjects = false;
-          break;
-        case ContentTag.NOCONTENT:
-          this.displayNotSelected = true;
-          this.displayAboutMe = false;
-          this.displayProjects = false;
-          break;
-      }
-      this.vectorCameraToTarget = data.vectorCameraToTarget;
-      console.log(
-        'ContentBoxComponent received animation data: ' +
-          this.contentTag +
-          ' ' +
-          this.vectorCameraToTarget
+      this.startAnimation(
+        data.contentTag,
+        data.cameraPosition,
+        data.targetPosition,
+        data.transitionIn
       );
     });
   }

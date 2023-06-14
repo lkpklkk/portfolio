@@ -11,6 +11,7 @@ export class navText extends THREE.Mesh {
   canvaBox: CanvasBoxComponent;
   conetentTag: ContentTag;
   isTweening: boolean = false;
+  focuesd: boolean = false;
 
   constructor(
     canvasBox: CanvasBoxComponent,
@@ -127,8 +128,14 @@ export class navText extends THREE.Mesh {
     let camera = this.canvaBox.camera;
     let angle = camera.position.angleTo(this.position);
     if (angle < Math.PI / 10) {
-      let force = Math.abs(angle) / 10;
-      let projectionOntoPlane = this.getProjectionOntoPlane();
+      let camDisToOrigin = camera.position.length();
+      let force = Math.abs(angle) / 2;
+      // let projectionOntoPlane = this.getProjectionOntoPlane();
+      let cameraPlaneNorma = this.canvaBox.camera.position.clone().normalize();
+      let cameraPlane = new THREE.Plane(cameraPlaneNorma, 0);
+      let projectionOntoPlane = new THREE.Vector3();
+      cameraPlane.projectPoint(this.position, projectionOntoPlane);
+      projectionOntoPlane.normalize();
       let nudge = projectionOntoPlane.multiplyScalar(force);
       // TODO: adjust the force (i.e. the direction traveled) according to the distance of the camera from the origin
       camera.position.add(nudge);
