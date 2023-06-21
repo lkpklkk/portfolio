@@ -1,4 +1,4 @@
-import anime, { set } from 'animejs';
+import anime from 'animejs';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { AnimationCorrelatorService } from 'src/app/animation-correlator.service';
 import { ContentTag } from 'src/app/contentTag';

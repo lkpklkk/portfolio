@@ -1,0 +1,33 @@
+:host {
+  flex-basis: calc(1 / 12 * 100%);
+  justify-content: center;
+  align-items: center;
+  margin-top: 5vh;
+  margin-left: 5vw;
+  margin-right: 5vw;
+  margin-bottom: 5vh;
+  display: flex;
+  text-align: center;
+}
+
+.side-logo {
+  width: 5vw;
+  margin-left: 5vw;
+  margin-right: 5vw;
+}
+
+.hori-bar {
+  width: 40vw;
+}
+
+/* slightly above hori-bar */
+.hori-bar-overlay {
+  width: 40vw;
+  position: absolute;
+  z-index: 1;
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+  font-size: 4vw;
+  font-style: bold;
+  color: rgb(241, 241, 241);
+  text-align: center;
+}

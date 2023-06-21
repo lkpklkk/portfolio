@@ -1,6 +1,17 @@
+:host {
+  flex-basis: calc(1 / 12 * 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #515151;
+  border-radius: 120px;
+  margin: 5vh 5vw;
+}
 .footer-container {
+  flex: 1;
+  text-align: center;
   display: flex;
   flex-flow: row;
   justify-content: space-evenly;
-  margin-bottom: 50px;
+  align-items: center;
 }

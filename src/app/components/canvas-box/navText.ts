@@ -129,7 +129,7 @@ export class navText extends THREE.Mesh {
     let angle = camera.position.angleTo(this.position);
     if (angle < Math.PI / 10) {
       let camDisToOrigin = camera.position.length();
-      let force = Math.abs(angle) / 2;
+      let force = ((camDisToOrigin / 3) * Math.abs(angle)) / 3;
       // let projectionOntoPlane = this.getProjectionOntoPlane();
       let cameraPlaneNorma = this.canvaBox.camera.position.clone().normalize();
       let cameraPlane = new THREE.Plane(cameraPlaneNorma, 0);

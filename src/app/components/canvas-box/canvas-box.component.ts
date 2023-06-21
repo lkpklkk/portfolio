@@ -1,4 +1,14 @@
-import { Component, ElementRef, Host, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  ComponentFactoryResolver,
+  Directive,
+  ElementRef,
+  Host,
+  OnInit,
+  QueryList,
+  ViewChild,
+  ViewChildren,
+} from '@angular/core';
 import * as THREE from 'three';
 import { AfterViewInit } from '@angular/core';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
@@ -7,20 +17,19 @@ import { HostListener } from '@angular/core';
 import { ContentTag } from 'src/app/contentTag';
 import { AnimationCorrelatorService } from 'src/app/animation-correlator.service';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry';
 import { Font, FontLoader } from 'three/examples/jsm/loaders/FontLoader';
 import * as TWEEN from '@tweenjs/tween.js';
+
 @Component({
   selector: 'app-canvas-box',
   templateUrl: './canvas-box.component.html',
   styleUrls: ['./canvas-box.component.css'],
 })
 export class CanvasBoxComponent implements OnInit, AfterViewInit {
-  @ViewChild('canvasElement')
+  @ViewChildren('iconOne,iconTwo,iconThree') sideIcons!: ElementRef[];
+  @ViewChildren('progressBarOne,progressBarTwo,progressBarThree')
+  progressBars!: ElementRef[];
   private canvasElement!: ElementRef;
-  private curCanvaWidth!: number;
-  private curCanvaHeight!: number;
-  private boundingRect!: DOMRect;
   scene!: THREE.Scene;
   camera!: THREE.PerspectiveCamera;
   renderer!: THREE.WebGLRenderer;
@@ -44,7 +53,7 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
     enableDamping: true,
     dampingFactor: 0.02,
     minDistance: 2,
-    maxDistance: 15,
+    maxDistance: 8,
   };
 
   constructor(
@@ -53,13 +62,42 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
   ) {
     console.log(this.hostRef.nativeElement);
   }
+  getCanvaWidth() {
+    console.log(this.hostRef.nativeElement.clientWidth);
+    let containerStyle = getComputedStyle(this.hostRef.nativeElement);
+    return (
+      this.hostRef.nativeElement.clientWidth -
+      parseInt(containerStyle.paddingLeft) -
+      parseInt(containerStyle.paddingRight) -
+      10
+    );
+  }
+  getCanvaHeight() {
+    let containerStyle = getComputedStyle(this.hostRef.nativeElement);
+    return (
+      this.hostRef.nativeElement.clientHeight -
+      parseInt(containerStyle.paddingTop) -
+      parseInt(containerStyle.paddingBottom) -
+      10
+    );
+  }
 
   ngOnInit() {}
   ngAfterViewInit() {
+    this.canvasElement = new ElementRef(
+      document.createElement('canvas')
+    ) as ElementRef<HTMLCanvasElement>;
+    let newCanvaHeight = this.getCanvaHeight();
+    let newCanvaWidth = this.getCanvaWidth();
+    this.canvasElement.nativeElement.width = newCanvaWidth;
+    this.canvasElement.nativeElement.height = newCanvaHeight;
+    // set z-index to 1 so that it is above the background
+    this.canvasElement.nativeElement.style.zIndex = '1';
+    console.log(this.canvasElement.nativeElement.style.zIndex);
+
     // annoyingly, the canvas element has a border-box sizing, so we have to subtract the border
-    this.curCanvaWidth = this.hostRef.nativeElement.clientWidth - 2;
-    this.curCanvaHeight = this.hostRef.nativeElement.clientHeight - 2;
-    this.boundingRect = this.hostRef.nativeElement.getBoundingClientRect();
+
+    this.hostRef.nativeElement.appendChild(this.canvasElement.nativeElement);
     this.initThreeJsScene();
     this.animate();
   }
@@ -138,13 +176,17 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
   }
   initThreeJsScene() {
     // set up scene and camera
-    this.canvasElement.nativeElement.width = this.curCanvaWidth;
-    this.canvasElement.nativeElement.height = this.curCanvaHeight;
+    let newCanvaHeight = this.getCanvaHeight();
+    let newCanvaWidth = this.getCanvaWidth();
+
+    this.canvasElement.nativeElement.width = newCanvaWidth;
+
+    this.canvasElement.nativeElement.height = newCanvaHeight;
 
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(
       this.cameraSettings.fov,
-      this.curCanvaWidth / this.curCanvaHeight,
+      newCanvaWidth / newCanvaHeight,
       this.cameraSettings.near,
       this.cameraSettings.far
     );
@@ -246,17 +288,14 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
     // update sizes
-    this.boundingRect = this.hostRef.nativeElement.getBoundingClientRect();
-
-    // annoyingly, the canvas element has a border-box sizing, so we have to subtract the border
-    this.curCanvaWidth = this.hostRef.nativeElement.clientWidth - 2;
-    this.curCanvaHeight = this.hostRef.nativeElement.clientHeight - 2;
-
-    this.canvasElement.nativeElement.width = this.curCanvaWidth;
-    this.canvasElement.nativeElement.height = this.curCanvaHeight;
-
-    this.renderer.setSize(this.curCanvaWidth, this.curCanvaHeight);
-    this.camera.aspect = this.curCanvaWidth / this.curCanvaHeight;
+    console.log(this.hostRef.nativeElement.clientWidth);
+    let newCanvaHeight = this.getCanvaHeight();
+    let newCanvaWidth = this.getCanvaWidth();
+    console.log(newCanvaHeight, newCanvaWidth);
+    this.canvasElement.nativeElement.width = newCanvaWidth;
+    this.canvasElement.nativeElement.height = newCanvaHeight;
+    this.renderer.setSize(newCanvaWidth, newCanvaHeight);
+    this.camera.aspect = newCanvaWidth / newCanvaHeight;
     this.camera.updateProjectionMatrix();
   }
   animate() {
@@ -286,6 +325,19 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
     });
     TWEEN.update();
     this.controls.update();
+    let normalizedCam = this.camera.position.clone().normalize();
+    let percs = [normalizedCam.x, normalizedCam.y, normalizedCam.z];
+    this.progressBars.forEach((elementRef: ElementRef, i: number) => {
+      const nativeElement = elementRef.nativeElement;
+      nativeElement.style.width = Math.abs(percs[i]) * 100 + '%';
+      // Perform operations on nativeElement using the index i
+    });
+    this.sideIcons.forEach((elementRef: ElementRef, i: number) => {
+      const nativeElement = elementRef.nativeElement;
+      nativeElement.style.rotate = Math.abs(percs[i]) * 180 + 'deg';
+      // Perform operations on nativeElement using the index i
+    });
+
     this.renderer.render(this.scene, this.camera);
   }
 }

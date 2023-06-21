@@ -1,15 +1,61 @@
 :host {
-  width: 50%;
+  flex-basis: calc(4.5 / 12 * 100%);
+  flex-grow: 0;
+  flex-shrink: 0;
+  display: block;
   height: 100%;
-  display: flex;
   align-items: center;
   justify-content: center;
-  /* border: 1px solid black; */
-  margin: auto;
+  border: 2px solid #515151;
+  border-radius: 120px 120px 120px 120px;
+  padding: 5%;
+  box-sizing: border-box;
+  position: relative;
 }
-
 @media screen and (max-aspect-ratio: 1/1) {
   :host {
     width: 100%;
   }
+}
+
+canvas {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box; /* Ensure padding is included in the element's total size */
+  z-index: 2;
+}
+.overlay-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-flow: column;
+  justify-content: left;
+  padding: 5%;
+}
+.row {
+  display: flex;
+  flex-flow: row;
+  justify-content: left;
+  align-items: center;
+  margin-left: 5%;
+  margin-top: 5%;
+}
+.side-icon {
+  width: 7%;
+}
+.progress-bar-outer {
+  flex-basis: calc(1 / 3 * 100%);
+  height: 40%;
+
+  margin-left: 5%;
+}
+
+.progress-bar-inner {
+  width: 100%;
+  height: 100%;
+  background-color: #515151;
 }
