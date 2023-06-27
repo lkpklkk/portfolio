@@ -1,0 +1,51 @@
+:host {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+#projectContainer {
+  justify-content: start;
+  height: 100%;
+}
+#titleBar {
+  justify-content: space-between;
+}
+#title {
+  font-size: 3vw;
+  margin-bottom: 0px;
+}
+#subtitle {
+  font-size: 1.5vw;
+}
+#titleIcon {
+  width: 5vw;
+  height: 5vw;
+}
+#techIconContainer {
+  justify-content: space-between;
+}
+#techIcon {
+  width: 4vw;
+  height: 4vw;
+}
+
+#contentBar {
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5%;
+}
+#contentImage {
+  width: 40%;
+  height: auto;
+  object-fit: contain;
+}
+#contentText {
+  width: 50%;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+#footerBar {
+  align-items: center;
+  justify-content: space-between;
+}

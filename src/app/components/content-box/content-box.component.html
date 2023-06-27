@@ -5,9 +5,20 @@
   ..................................
 </div> -->
 
-<div #aboutMe [hidden]="currentView !== contentTag.ABOUTME">About me</div>
-
-<div #projects [hidden]="currentView !== contentTag.PROJECTS">PROEJCTS!!</div>
+<div
+  #aboutMe
+  [hidden]="currentView !== contentTag.ABOUTME"
+  class="content-container"
+>
+  <app-about-me></app-about-me>
+</div>
+<div
+  #projects
+  [hidden]="currentView !== contentTag.PROJECTS"
+  class="content-container"
+>
+  <app-project-page></app-project-page>
+</div>
 
 <div #credits [hidden]="currentView !== contentTag.CREDITS">
   SPECIAL THANNKS TO

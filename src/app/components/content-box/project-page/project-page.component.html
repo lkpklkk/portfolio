@@ -1,0 +1,31 @@
+<div class="col-container" id="projectContainer">
+  <div class="row-container flex-size-2" id="titleBar">
+    <div class="col-container" id="titleContainer">
+      <h1 id="title">{{ curProject.title }}</h1>
+      <h3 id="subTitle">{{ curProject.subtitle }}</h3>
+    </div>
+    <img id="titleIcon" [src]="curProject.projectIconUrl" />
+  </div>
+
+  <div class="row-container flex-size-6" id="contentBar">
+    <img id="contentImage" [src]="curProject.image" />
+    <div id="contentText">
+      {{ curProject.description }}
+    </div>
+  </div>
+  <div class="row-container flex-size-2" id="footerBar">
+    <div class="row-container flex-size-4" id="techIconContainer">
+      <img
+        *ngFor="let iconUrl of curProject.techIconsUrls; let i = index"
+        [src]="iconUrl"
+        id="techIcon"
+        [title]="curProject.techIconsNames[i]"
+      />
+    </div>
+
+    <div id="navButtons">
+      <button (click)="prevProject()">Previous</button>
+      <button (click)="nextProject()">Next</button>
+    </div>
+  </div>
+</div>

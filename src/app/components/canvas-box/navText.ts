@@ -11,7 +11,9 @@ export class navText extends THREE.Mesh {
   canvaBox: CanvasBoxComponent;
   conetentTag: ContentTag;
   isTweening: boolean = false;
-  focuesd: boolean = false;
+  focusing: boolean = false;
+  focused: boolean = false;
+  focusedFrame: number = 0;
 
   constructor(
     canvasBox: CanvasBoxComponent,
@@ -121,6 +123,21 @@ export class navText extends THREE.Mesh {
    * https://www.maplesoft.com/support/help/maple/view.aspx?path=MathApps/ProjectionOfVectorOntoPlane
    */
   gravityPull() {
+    let camera = this.canvaBox.camera;
+    let camDisToOrigin = camera.position.length();
+    let angle = camera.position.angleTo(this.position);
+    let force = ((camDisToOrigin / 3) * Math.abs(angle)) / 5;
+    // let projectionOntoPlane = this.getProjectionOntoPlane();
+    let cameraPlaneNorma = this.canvaBox.camera.position.clone().normalize();
+    let cameraPlane = new THREE.Plane(cameraPlaneNorma, 0);
+    let projectionOntoPlane = new THREE.Vector3();
+    cameraPlane.projectPoint(this.position, projectionOntoPlane);
+    projectionOntoPlane.normalize();
+    return projectionOntoPlane.multiplyScalar(force);
+    // TODO: adjust the force (i.e. the direction traveled) according to the distance of the camera from the origin
+  }
+
+  isWithinView() {
     if (this.isTweening) {
       // means I am going towards the thing
       return true;
@@ -128,23 +145,16 @@ export class navText extends THREE.Mesh {
     let camera = this.canvaBox.camera;
     let angle = camera.position.angleTo(this.position);
     if (angle < Math.PI / 10) {
-      let camDisToOrigin = camera.position.length();
-      let force = ((camDisToOrigin / 3) * Math.abs(angle)) / 3;
-      // let projectionOntoPlane = this.getProjectionOntoPlane();
-      let cameraPlaneNorma = this.canvaBox.camera.position.clone().normalize();
-      let cameraPlane = new THREE.Plane(cameraPlaneNorma, 0);
-      let projectionOntoPlane = new THREE.Vector3();
-      cameraPlane.projectPoint(this.position, projectionOntoPlane);
-      projectionOntoPlane.normalize();
-      let nudge = projectionOntoPlane.multiplyScalar(force);
-      // TODO: adjust the force (i.e. the direction traveled) according to the distance of the camera from the origin
-      camera.position.add(nudge);
       return true;
     } else {
       return false;
     }
   }
-
+  getAngleDifference() {
+    let camera = this.canvaBox.camera;
+    let angle = camera.position.angleTo(this.position);
+    return angle;
+  }
   getContentTag() {
     return this.conetentTag;
   }

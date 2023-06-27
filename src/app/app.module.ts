@@ -10,6 +10,8 @@ import { HomePageComponent } from './components/home-page/home-page.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HeaderComponent } from './components/header/header.component';
+import { AboutMeComponent } from './components/content-box/about-me/about-me.component';
+import { ProjectPageComponent } from './components/content-box/project-page/project-page.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +22,8 @@ import { HeaderComponent } from './components/header/header.component';
     HomePageComponent,
     FooterComponent,
     HeaderComponent,
+    AboutMeComponent,
+    ProjectPageComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, BrowserAnimationsModule],
   providers: [],

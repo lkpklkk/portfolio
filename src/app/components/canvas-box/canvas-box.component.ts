@@ -19,6 +19,8 @@ import { AnimationCorrelatorService } from 'src/app/animation-correlator.service
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { Font, FontLoader } from 'three/examples/jsm/loaders/FontLoader';
 import * as TWEEN from '@tweenjs/tween.js';
+import * as HOWL from 'howler';
+import { NONE_TYPE } from '@angular/compiler';
 
 @Component({
   selector: 'app-canvas-box',
@@ -41,6 +43,12 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
   contentTag: ContentTag = ContentTag.NOCONTENT;
   vectorCameraToTarget: THREE.Vector3 = new THREE.Vector3(0, 0, 0);
   navFont!: Font;
+  soundWhoosh!: HOWL.Howl;
+  soundClick!: HOWL.Howl;
+  lastClickCameraPosition: THREE.Vector3 = new THREE.Vector3(0, 0, 0);
+  focusingNav?: navText = undefined;
+  doneFocus: boolean = false;
+  focusedTimer: number = 0;
 
   cameraSettings = {
     fov: 75,
@@ -51,7 +59,7 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
 
   controlsSettings = {
     enableDamping: true,
-    dampingFactor: 0.02,
+    dampingFactor: 0.04,
     minDistance: 2,
     maxDistance: 8,
   };
@@ -84,6 +92,7 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {}
   ngAfterViewInit() {
+    this.soundInit();
     this.canvasElement = new ElementRef(
       document.createElement('canvas')
     ) as ElementRef<HTMLCanvasElement>;
@@ -191,7 +200,6 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
       this.cameraSettings.far
     );
     this.camera.position.z = this.cameraSettings.initialZPosition;
-
     // 3d text loader
     const fontLoader = new FontLoader();
 
@@ -235,6 +243,15 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
     this.scene.add(ambientLight);
 
     this.addAxisLines();
+  }
+  soundInit() {
+    this.soundWhoosh = new HOWL.Howl({
+      src: ['../../../assets/sounds/whoosh/1.mp3'],
+    });
+
+    this.soundClick = new HOWL.Howl({
+      src: ['../../../assets/sounds/click.mp3'],
+    });
   }
 
   // @HostListener('window:mousemove', ['$event'])
@@ -287,7 +304,6 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
 
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
-    // update sizes
     console.log(this.hostRef.nativeElement.clientWidth);
     let newCanvaHeight = this.getCanvaHeight();
     let newCanvaWidth = this.getCanvaWidth();
@@ -300,29 +316,7 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
   }
   animate() {
     requestAnimationFrame(() => this.animate());
-    this.navTexts.forEach((navText) => {
-      if (navText.gravityPull()) {
-        if (!navText.focuesd) {
-          navText.focuesd = true;
-          this.animator.uploadAnimationData(
-            navText.conetentTag,
-            this.camera.position,
-            navText.position,
-            true
-          );
-        }
-      } else {
-        if (navText.focuesd) {
-          navText.focuesd = false;
-          this.animator.uploadAnimationData(
-            navText.conetentTag,
-            this.camera.position,
-            navText.position,
-            false
-          );
-        }
-      }
-    });
+
     TWEEN.update();
     this.controls.update();
     let normalizedCam = this.camera.position.clone().normalize();
@@ -338,6 +332,71 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
       // Perform operations on nativeElement using the index i
     });
 
+    let difference = this.lastClickCameraPosition
+      .clone()
+      .sub(this.camera.position);
+
+    if (difference.length() > 0.3) {
+      this.soundClick.play();
+      this.lastClickCameraPosition.set(
+        this.camera.position.x,
+        this.camera.position.y,
+        this.camera.position.z
+      );
+    }
+    let neutral = true;
+    this.navTexts.forEach((navText) => {
+      if (navText.isWithinView()) {
+        if (!this.doneFocus) {
+          this.controls.enabled = false;
+        }
+
+        neutral = false;
+        if (this.focusingNav !== navText) {
+          this.focusingNav = navText;
+          this.doneFocus = false;
+          // Staring the transition
+          this.soundWhoosh.play();
+          navText.focused = true;
+          this.animator.uploadAnimationData(
+            navText.conetentTag,
+            this.camera.position,
+            navText.position,
+            true
+          );
+        }
+
+        let angleDifference = navText.getAngleDifference();
+        if (angleDifference < 0.1) {
+          this.focusedTimer += 1;
+          if (this.focusedTimer > 200) {
+            this.focusedTimer = 0;
+            this.doneFocus = true;
+            this.controls.enabled = true;
+          }
+        } else {
+          this.focusedTimer = 0;
+        }
+        if (!this.doneFocus) {
+          let cameraNudge = navText.gravityPull();
+          this.camera.position.add(cameraNudge);
+        }
+      }
+    });
+    if (neutral) {
+      this.controls.enabled = true;
+      if (this.focusingNav) {
+        this.animator.uploadAnimationData(
+          this.focusingNav.conetentTag,
+          this.camera.position,
+          this.focusingNav.position,
+          false
+        );
+        this.focusingNav = undefined;
+        this.doneFocus = false;
+        this.focusedTimer = 0;
+      }
+    }
     this.renderer.render(this.scene, this.camera);
   }
 }
