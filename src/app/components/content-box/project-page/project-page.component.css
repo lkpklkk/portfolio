@@ -1,46 +1,58 @@
 :host {
-  display: block;
-  width: 100%;
+  justify-content: space-evenly;
   height: 100%;
+  display: flex;
+  flex-direction: column;
 }
-#projectContainer {
-  justify-content: start;
-  height: 100%;
-}
+
 #titleBar {
   justify-content: space-between;
+  align-items: center;
 }
+
 #title {
-  font-size: 3vw;
+  margin-top: 0px;
   margin-bottom: 0px;
 }
-#subtitle {
-  font-size: 1.5vw;
+
+#subTitle {
+  margin-top: 0px;
+  margin-bottom: 0px;
 }
+
 #titleIcon {
   width: 5vw;
   height: 5vw;
 }
+
 #techIconContainer {
-  justify-content: space-between;
+  justify-content: flex-start;
+  width: 40%;
 }
+
 #techIcon {
-  width: 4vw;
-  height: 4vw;
+  width: 2.5vw;
+  height: 2.5vw;
+  margin-left: 0.5vw;
+  margin-right: 0.5vw;
+  margin-top: 0.5vh;
+  margin-bottom: 0.5vh;
 }
 
 #contentBar {
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 5%;
+  margin-bottom: 1vh;
 }
+
 #contentImage {
   width: 40%;
   height: auto;
   object-fit: contain;
 }
+
 #contentText {
-  width: 50%;
+  width: 55%;
   padding-left: 10px;
   padding-right: 10px;
 }
@@ -48,4 +60,15 @@
 #footerBar {
   align-items: center;
   justify-content: space-between;
+}
+
+#leftButton,
+#rightButton {
+  background-color: transparent;
+  border: none;
+}
+
+.pageButton {
+  width: 4vw;
+  height: 4vw;
 }

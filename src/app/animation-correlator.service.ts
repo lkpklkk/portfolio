@@ -5,8 +5,8 @@ import * as THREE from 'three';
 
 interface AnimationData {
   contentTag: ContentTag;
-  cameraPosition: THREE.Vector3;
-  targetPosition: THREE.Vector3;
+  translateX: number;
+  translateY: number;
   transitionIn: boolean;
 }
 @Injectable({
@@ -19,14 +19,14 @@ export class AnimationCorrelatorService {
 
   uploadAnimationData(
     contentTag: ContentTag,
-    cameraPosition: THREE.Vector3,
-    targetPosition: THREE.Vector3,
+    translateX: number,
+    translateY: number,
     transitionIn: boolean
   ) {
     this.animationDataUploaded.emit({
       contentTag: contentTag,
-      cameraPosition: cameraPosition,
-      targetPosition: targetPosition,
+      translateX: translateX,
+      translateY: translateY,
       transitionIn: transitionIn,
     });
   }

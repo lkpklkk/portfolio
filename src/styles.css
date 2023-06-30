@@ -22,10 +22,16 @@ h2 {
   color: #282828;
 }
 h3 {
-  font-family: "Druk Wide";
+  font-family: "Druk";
+  font-style: medium italic;
+  font-size: 3rem;
+  color: #282828;
+}
+h4 {
+  font-family: "Druk";
   font-style: medium;
-  font-size: 1em;
-  color: #424242;
+  font-size: 2rem;
+  color: #565656;
 }
 footer {
   font-family: "Druk Wide";
@@ -71,8 +77,71 @@ footer {
   src: url("assets/fonts/DrukWide/DrukTextWide-SuperItalic-Trial.otf");
 }
 
+@font-face {
+  font-family: "Druk";
+  font-style: bold;
+  src: url("assets/fonts/Druk/DrukText-Bold-Trial.otf");
+}
+
+@font-face {
+  font-family: "Druk";
+  font-style: bold italic;
+  src: url("assets/fonts/Druk/DrukText-BoldItalic-Trial.otf");
+}
+
+@font-face {
+  font-family: "Druk";
+  font-style: medium;
+  src: url("assets/fonts/Druk/DrukText-Medium-Trial.otf");
+}
+
+@font-face {
+  font-family: "Druk";
+  font-style: medium italic;
+  src: url("assets/fonts/Druk/DrukText-MediumItalic-Trial.otf");
+}
+@font-face {
+  font-family: "Druk";
+  font-size: super;
+  src: url("assets/fonts/Druk/DrukText-Super-Trial.otf");
+}
+
+@font-face {
+  font-family: "Druk";
+  font-style: super italic;
+  src: url("assets/fonts/Druk/DrukText-SuperItalic-Trial.otf");
+}
+
+@font-face {
+  font-family: "Druk";
+  font-style: heavy;
+  src: url("assets/fonts/Druk/DrukText-Heavy-Trial.otf");
+}
+@font-face {
+  font-family: "Druk";
+  font-style: heavy italic;
+  src: url("assets/fonts/Druk/DrukText-HeavyItalic-Trial.otf");
+}
 body {
   margin: 0;
+}
+
+p {
+  font-family: "Druk";
+  font-style: medium;
+  font-size: 0.9rem;
+  line-height: 1.5em;
+  color: #282828;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.highlight {
+  color: #f7f7f7;
+  font-size: 0.8rem;
+  background-color: #282828;
+  padding: 0.2em;
+  border-radius: 0.2em;
 }
 
 *,

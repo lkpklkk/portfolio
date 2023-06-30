@@ -24,44 +24,42 @@ export class ContentBoxComponent {
 
   startAnimation(
     contentTag: ContentTag,
-    cameraPosition: THREE.Vector3,
-    targetPosition: THREE.Vector3,
+    translateX: number,
+    translateY: number,
     transitionIn: boolean
   ) {
-    targetPosition = targetPosition.clone().normalize();
-    cameraPosition = cameraPosition.clone().normalize();
-    let direction = new THREE.Vector2(
-      targetPosition.x - cameraPosition.x,
-      targetPosition.y - cameraPosition.y
-    );
-    //
-    // Convert the direction to a 2D angle
-    let angle = Math.atan2(direction.y, direction.x);
-    let translateX = Math.cos(angle) * 20;
-    let translateY = -Math.sin(angle) * 20;
-    if (cameraPosition.z < 0) {
-      translateX = -translateX;
-    }
+    console.log(translateX, translateY);
+
+    translateX *= 100;
+    translateY *= 100;
+
     if (transitionIn) {
-      console.log('transition into' + contentTag);
       this.currentView = contentTag;
+      console.log(
+        this.animationTargets[contentTag].nativeElement.children[0].children
+      );
       anime({
-        targets: this.animationTargets[contentTag].nativeElement,
+        targets:
+          this.animationTargets[contentTag].nativeElement.children[0].children,
         translateX: [translateX, 0],
         translateY: [translateY, 0],
+        scale: [0.7, 1],
         opacity: [0, 1],
         duration: 300,
         easing: 'easeInOutQuad',
+        delay: anime.stagger(20),
       });
     } else {
-      console.log('transition out' + contentTag);
       anime({
-        targets: this.animationTargets[contentTag].nativeElement,
+        targets:
+          this.animationTargets[contentTag].nativeElement.children[0].children,
         translateX: [0, translateX],
         translateY: [0, translateY],
         opacity: [1, 0],
+        scale: [1, 0.7],
         duration: 300,
         easing: 'easeInOutQuad',
+        delay: anime.stagger(20),
         complete: () => {
           if (this.currentView == contentTag)
             this.currentView = ContentTag.NOCONTENT;
@@ -81,8 +79,8 @@ export class ContentBoxComponent {
     this.animator.animationDataUploaded.subscribe((data) => {
       this.startAnimation(
         data.contentTag,
-        data.cameraPosition,
-        data.targetPosition,
+        data.translateX,
+        data.translateY,
         data.transitionIn
       );
     });

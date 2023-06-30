@@ -1,4 +1,4 @@
-<div class="overlay-container">
+<div class="overlay-container-top-left">
   <div class="row">
     <img #iconOne class="side-icon" src="assets/graphics/1.png" />
     <div class="progress-bar-outer">
@@ -18,5 +18,35 @@
     <div class="progress-bar-outer">
       <div #progressBarThree class="progress-bar-inner"></div>
     </div>
+  </div>
+</div>
+
+<div #turnHintContainer class="overlay-bottom-container">
+  <div>
+    <img #turnIcon id="turnIcon" src="../../../assets/graphics/turn.svg" />
+    <p id="turnHint">Click and drag</p>
+  </div>
+</div>
+
+<div
+  #pageIndicatorContainer
+  id="pageIndicatorContainer"
+  class="overlay-bottom-container"
+>
+  <div>
+    <span #pageIndicatorAbout class="pageIndicatorIcon"></span>
+    <span #pageIndicatorProjects class="pageIndicatorIcon"> </span>
+    <span #pageIndicatorCredits class="pageIndicatorIcon"> </span>
+  </div>
+</div>
+<div
+  *ngIf="turnHintUsed"
+  #gravityIconsFrameContainer
+  class="overlay-bottom-container"
+>
+  <div>
+    <span class="gravity-icon-frame-circle"></span>
+    <span class="gravity-icon-frame-circle"></span>
+    <span class="gravity-icon-frame-circle"></span>
   </div>
 </div>

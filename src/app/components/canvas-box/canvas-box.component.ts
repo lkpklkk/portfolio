@@ -9,6 +9,7 @@ import {
   ViewChild,
   ViewChildren,
 } from '@angular/core';
+import anime from 'animejs';
 import * as THREE from 'three';
 import { AfterViewInit } from '@angular/core';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
@@ -20,7 +21,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { Font, FontLoader } from 'three/examples/jsm/loaders/FontLoader';
 import * as TWEEN from '@tweenjs/tween.js';
 import * as HOWL from 'howler';
-import { NONE_TYPE } from '@angular/compiler';
+import { Conditional, NONE_TYPE } from '@angular/compiler';
 
 @Component({
   selector: 'app-canvas-box',
@@ -31,7 +32,24 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
   @ViewChildren('iconOne,iconTwo,iconThree') sideIcons!: ElementRef[];
   @ViewChildren('progressBarOne,progressBarTwo,progressBarThree')
   progressBars!: ElementRef[];
+  @ViewChild('turnHintContainer')
+  turnHintContainer!: ElementRef;
+  turnHintContainerAnimation!: anime.AnimeInstance;
+  @ViewChild('turnIcon')
+  turnIcon!: ElementRef;
+  turnIconAnimation!: anime.AnimeInstance;
+  turnHintUsed: boolean = false;
+  @ViewChild('pageIndicatorContainer')
+  pageIndicatorContainer!: ElementRef;
+  @ViewChild('pageIndicatorAbout')
+  pageIndicatorAbout!: ElementRef;
+  @ViewChild('pageIndicatorProjects')
+  pageIndicatorProjects!: ElementRef;
+  @ViewChild('pageIndicatorCredits')
+  pageIndicatorCredits!: ElementRef;
+  gravityHintContainerAnimation!: anime.AnimeInstance;
   private canvasElement!: ElementRef;
+  headModel!: THREE.Group;
   scene!: THREE.Scene;
   camera!: THREE.PerspectiveCamera;
   renderer!: THREE.WebGLRenderer;
@@ -60,9 +78,13 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
   controlsSettings = {
     enableDamping: true,
     dampingFactor: 0.04,
-    minDistance: 2,
-    maxDistance: 8,
+    minDistance: 4,
+    maxDistance: 4,
+    enableZoom: false,
   };
+
+  headCenter = new THREE.Vector3(0, 0.5, 0);
+  headMaxDistance = 0.2;
 
   constructor(
     private hostRef: ElementRef,
@@ -107,7 +129,8 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
     // annoyingly, the canvas element has a border-box sizing, so we have to subtract the border
 
     this.hostRef.nativeElement.appendChild(this.canvasElement.nativeElement);
-    this.initThreeJsScene();
+    this.createScene();
+    this.hintInit();
     this.animate();
   }
 
@@ -118,21 +141,24 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
         ContentTag.ABOUTME,
         this.navFont,
         'About Me',
-        new THREE.Vector3(0, 1, 1.1)
+        new THREE.Vector3(0, 1, 1.1),
+        this.pageIndicatorAbout.nativeElement
       ),
       new navText(
         this,
         ContentTag.PROJECTS,
         this.navFont,
         'Projects',
-        new THREE.Vector3(0, 0.4, -1.1)
+        new THREE.Vector3(0, 0.4, -1.1),
+        this.pageIndicatorProjects.nativeElement
       ),
       new navText(
         this,
         ContentTag.CREDITS,
         this.navFont,
         'Credits',
-        new THREE.Vector3(1, -0.4, -1.1)
+        new THREE.Vector3(1, -0.4, -1.1),
+        this.pageIndicatorCredits.nativeElement
       ),
     ];
     navSpheres.forEach((navSphere) => {
@@ -170,20 +196,22 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
 
     this.scene.add(aidAxis);
   }
-  addThreeJsBox(): void {
-    /*The our code is here, I removed it because of the total lines*/
 
-    const material = new THREE.MeshToonMaterial();
-    const box = new THREE.Mesh(new THREE.BoxGeometry(1.5, 1.5, 1.5), material);
+  addTorus(): void {
+    let material = new THREE.MeshStandardMaterial();
+    material.metalness = 0.3;
+    material.roughness = 0;
+    material.wireframe = true;
 
-    const torus = new THREE.Mesh(
-      new THREE.TorusGeometry(5, 1.5, 16, 100),
+    let torus = new THREE.Mesh(
+      new THREE.TorusGeometry(1.3, 0.2, 16, 100),
       material
     );
-
-    this.scene.add(torus, box);
+    torus.rotateX(Math.PI / 2);
+    torus.position.y = -1.5;
+    this.scene.add(torus);
   }
-  initThreeJsScene() {
+  createScene() {
     // set up scene and camera
     let newCanvaHeight = this.getCanvaHeight();
     let newCanvaWidth = this.getCanvaWidth();
@@ -212,7 +240,13 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
     gltfLoader.load(
       'assets/models/scene.gltf',
       (gltf) => {
-        this.scene.add(gltf.scene);
+        this.headModel = gltf.scene;
+        this.headModel.position.set(
+          this.headCenter.x,
+          this.headCenter.y,
+          this.headCenter.z
+        );
+        this.scene.add(this.headModel);
       },
       undefined,
       function (error) {
@@ -231,6 +265,7 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
     this.controls.dampingFactor = this.controlsSettings.dampingFactor;
     this.controls.minDistance = this.controlsSettings.minDistance;
     this.controls.maxDistance = this.controlsSettings.maxDistance;
+    this.controls.enableZoom = this.controlsSettings.enableZoom;
 
     const pointLight = new THREE.PointLight(0xffffff, 0.5);
     pointLight.position.x = 2;
@@ -241,7 +276,7 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
     // add new ambient light
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
     this.scene.add(ambientLight);
-
+    this.addTorus();
     this.addAxisLines();
   }
   soundInit() {
@@ -253,7 +288,30 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
       src: ['../../../assets/sounds/click.mp3'],
     });
   }
-
+  hintInit() {
+    this.turnHintContainerAnimation = anime({
+      targets: this.turnHintContainer.nativeElement,
+      opacity: [0, 1, 0],
+      duration: 4000,
+      easing: 'linear',
+      loop: true,
+    });
+  }
+  calculateTranslateXY(cameraVec: THREE.Vector3, targetVec: THREE.Vector3) {
+    let direction = new THREE.Vector2(
+      targetVec.x - cameraVec.x,
+      targetVec.y - cameraVec.y
+    );
+    //
+    // Convert the direction to a 2D angle
+    let angle = Math.atan2(direction.y, direction.x);
+    let translateX = Math.cos(angle);
+    let translateY = -Math.sin(angle);
+    if (cameraVec.z < 0) {
+      translateX = -translateX;
+    }
+    return [translateX, translateY];
+  }
   // @HostListener('window:mousemove', ['$event'])
   // onMouseMove(event: MouseEvent) {
   //   const mouse = new THREE.Vector2();
@@ -292,15 +350,39 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
   //   });
   // }
 
-  // @HostListener('window:click', ['$event'])
-  // onClick(event: MouseEvent) {
-  //   this.intersects.forEach((hit) => {
-  //     // Call onClick
-  //     if (hit.object instanceof navText) {
-  //       (hit.object as navText).onClicked(event);
-  //     }
-  //   });
-  // }
+  @HostListener('window:click', ['$event'])
+  onClick(event: MouseEvent) {
+    // this.intersects.forEach((hit) => {
+    //   // Call onClick
+    //   if (hit.object instanceof navText) {
+    //     (hit.object as navText).onClicked(event);
+    //   }
+    // });
+    if (!this.turnHintUsed) {
+      this.turnHintContainerAnimation.pause();
+      let curOpacity = this.turnHintContainer.nativeElement.style.opacity;
+
+      this.turnHintContainerAnimation = anime({
+        targets: this.turnHintContainer.nativeElement,
+        opacity: [curOpacity, 0],
+        duration: curOpacity * 1000,
+        easing: 'easeOutQuad',
+        loop: false,
+        complete: () => {
+          this.turnHintUsed = true;
+          this.turnHintContainer.nativeElement.style.display = 'none';
+          this.pageIndicatorContainer.nativeElement.style.display = 'block';
+          anime({
+            targets: this.pageIndicatorContainer.nativeElement,
+            opacity: [0, 1],
+            duration: 500,
+            easing: 'easeOutQuad',
+            loop: false,
+          });
+        },
+      });
+    }
+  }
 
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
@@ -316,7 +398,6 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
   }
   animate() {
     requestAnimationFrame(() => this.animate());
-
     TWEEN.update();
     this.controls.update();
     let normalizedCam = this.camera.position.clone().normalize();
@@ -337,7 +418,7 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
       .sub(this.camera.position);
 
     if (difference.length() > 0.3) {
-      this.soundClick.play();
+      // this.soundClick.play();
       this.lastClickCameraPosition.set(
         this.camera.position.x,
         this.camera.position.y,
@@ -345,6 +426,8 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
       );
     }
     let neutral = true;
+
+    // NavText gravity pulling effect
     this.navTexts.forEach((navText) => {
       if (navText.isWithinView()) {
         if (!this.doneFocus) {
@@ -356,20 +439,40 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
           this.focusingNav = navText;
           this.doneFocus = false;
           // Staring the transition
-          this.soundWhoosh.play();
+          // this.soundWhoosh.play();
+          let translate = this.calculateTranslateXY(
+            this.camera.position.clone().normalize(),
+            navText.position.clone().normalize()
+          );
+          let translateX = translate[0];
+          let translateY = translate[1];
+
           navText.focused = true;
           this.animator.uploadAnimationData(
             navText.conetentTag,
-            this.camera.position,
-            navText.position,
+            translateX,
+            translateY,
             true
           );
+          let angle = Math.asin(translateX);
+          angle = angle * (180 / Math.PI);
+
+          navText.pageIndicatorAnimation = anime({
+            targets: navText.pageIndicatorDom,
+            translateX: [translateX * 30, 0],
+            translateY: [translateY * 30, 0],
+            scale: [0.5, 1],
+            opacity: [0, 1],
+            duration: 1500,
+            easing: 'easeOutElastic(1, .6)',
+            loop: false,
+          });
         }
 
         let angleDifference = navText.getAngleDifference();
         if (angleDifference < 0.1) {
           this.focusedTimer += 1;
-          if (this.focusedTimer > 200) {
+          if (this.focusedTimer > 100) {
             this.focusedTimer = 0;
             this.doneFocus = true;
             this.controls.enabled = true;
@@ -383,20 +486,43 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
         }
       }
     });
+
+    // send out transitioning out signal
     if (neutral) {
       this.controls.enabled = true;
       if (this.focusingNav) {
+        let translate = this.calculateTranslateXY(
+          this.camera.position.clone().normalize(),
+          this.focusingNav.position.clone().normalize()
+        );
+        let translateX = translate[0];
+        let translateY = translate[1];
         this.animator.uploadAnimationData(
           this.focusingNav.conetentTag,
-          this.camera.position,
-          this.focusingNav.position,
+          translateX,
+          translateY,
           false
         );
+        if (this.focusingNav.pageIndicatorAnimation) {
+          this.focusingNav.pageIndicatorAnimation.pause();
+        }
+        let animationTarget = this.focusingNav.pageIndicatorDom;
         this.focusingNav = undefined;
         this.doneFocus = false;
         this.focusedTimer = 0;
+
+        anime({
+          targets: animationTarget,
+          translateX: [0, translateX * 30],
+          translateY: [0, translateY * 30],
+          opacity: [1, 0],
+          duration: 500,
+          easing: 'easeOutQuad',
+          loop: false,
+        });
       }
     }
+
     this.renderer.render(this.scene, this.camera);
   }
 }

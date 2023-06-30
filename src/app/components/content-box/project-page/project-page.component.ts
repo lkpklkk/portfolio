@@ -57,8 +57,8 @@ export class ProjectPageComponent {
       new Project(
         'CounterAds',
         'Full Stack Dev',
-        'CounterAds is a full stack web application that allows users to create and manage their own advertisements. It is built with Angular, Node.js, Express, and MongoDB.',
-        '../../../../assets/graphics/CounterAds.png',
+        "Using <span class='highlight'>AngularJS</span>, advertisers can showcase their ads, and gamers can try to shoot them down. If they miss, they watch the ad. Incorporating <span class='highlight'>Auth0</span> for security, <span class='highlight'>Socket.IO</span> for real-time play, <span class='highlight'>PostgreSQL</span> for data storage",
+        '../../../../assets/graphics/stack.svg',
         '../../../../assets/imgs/CounterAds.png',
         '',
         [
@@ -73,6 +73,7 @@ export class ProjectPageComponent {
       )
     );
   }
+
   ngOnInit() {
     this.curProject = this.projects[this.curIndex];
   }

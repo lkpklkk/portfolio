@@ -4,6 +4,8 @@ import { ContentTag } from 'src/app/contentTag';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry';
 import { Font } from 'three/examples/jsm/loaders/FontLoader';
 import * as TWEEN from '@tweenjs/tween.js';
+import anime from 'animejs';
+import { NONE_TYPE } from '@angular/compiler';
 export class navText extends THREE.Mesh {
   originalColor: THREE.Color;
   hoverColor: string;
@@ -14,13 +16,16 @@ export class navText extends THREE.Mesh {
   focusing: boolean = false;
   focused: boolean = false;
   focusedFrame: number = 0;
+  pageIndicatorDom: HTMLElement;
+  pageIndicatorAnimation?: anime.AnimeInstance;
 
   constructor(
     canvasBox: CanvasBoxComponent,
     contentTag: ContentTag,
     font: Font,
     text: string,
-    position: THREE.Vector3
+    position: THREE.Vector3,
+    pageIndicatorDom: HTMLElement
   ) {
     super();
     this.originalColor = new THREE.Color(0xffa559);
@@ -45,6 +50,7 @@ export class navText extends THREE.Mesh {
     this.active = false;
     this.canvaBox = canvasBox;
     this.conetentTag = contentTag;
+    this.pageIndicatorDom = pageIndicatorDom;
   }
 
   private positionSelf() {
