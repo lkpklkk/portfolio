@@ -9,18 +9,44 @@
 .top-left-text {
   font-size: 2vw;
 }
-.background-image {
+.background-image-container {
   position: absolute;
   left: 0;
   width: 100%;
   top: 30%;
   height: 50%;
-  background-image: url("../../../../assets/graphics/aboutMeCenterGraphic.png");
+}
+.background-image-base {
+  width: 100%;
+  height: 100%;
   background-size: 100% 100%;
   background-position: center;
   background-repeat: no-repeat;
-  border: 0px;
+  border: 0;
+  border-image-width: 0;
+  background-image: url("../../../../assets/graphics/aboutMeCenterGraphic.png");
 }
+.overlay {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+.background-image-overlay {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: 0;
+  border-image-width: 0;
+  background-image: url("../../../../assets/graphics/aboutMeCenterGraphicOverlay.png");
+}
+
 .top-left-text {
   flex-basis: 1;
 }
@@ -42,7 +68,30 @@
   flex-direction: column;
 }
 .bottom-right-text {
-  margin-top: 5px;
-  margin-bottom: 5px;
-  font-size: 1vw;
+  padding: 5px;
+  width: fit-content;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.inverted {
+  background-color: #e0e0e0;
+  filter: invert(1);
+}
+
+#mouse-circle {
+  position: absolute;
+  width: 6vw;
+  height: 6vw;
+  margin: -3vw 0 0 -3.5vw;
+  border: 4px dotted #3d3c3c;
+  border-radius: 50%;
+  pointer-events: none;
+}
+.clipped {
+  clip-path: circle(3vw at var(--x, 0) var(--y, 0));
+}
+.bottom-row {
+  display: flex;
+  flex-direction: row;
+  justify-self: space-between;
 }

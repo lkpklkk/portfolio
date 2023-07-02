@@ -17,6 +17,7 @@
       *ngFor="let iconUrl of curProject.techIconsUrls; let i = index"
       [src]="iconUrl"
       id="techIcon"
+      alt="curProject.techIconsNames[i]"
       [title]="curProject.techIconsNames[i]"
     />
   </div>

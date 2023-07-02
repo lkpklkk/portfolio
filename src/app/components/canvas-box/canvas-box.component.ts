@@ -78,8 +78,8 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
   controlsSettings = {
     enableDamping: true,
     dampingFactor: 0.04,
-    minDistance: 4,
-    maxDistance: 4,
+    minDistance: 3.5,
+    maxDistance: 3.5,
     enableZoom: false,
   };
 
@@ -89,11 +89,8 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
   constructor(
     private hostRef: ElementRef,
     private animator: AnimationCorrelatorService
-  ) {
-    console.log(this.hostRef.nativeElement);
-  }
+  ) {}
   getCanvaWidth() {
-    console.log(this.hostRef.nativeElement.clientWidth);
     let containerStyle = getComputedStyle(this.hostRef.nativeElement);
     return (
       this.hostRef.nativeElement.clientWidth -
@@ -124,7 +121,6 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
     this.canvasElement.nativeElement.height = newCanvaHeight;
     // set z-index to 1 so that it is above the background
     this.canvasElement.nativeElement.style.zIndex = '1';
-    console.log(this.canvasElement.nativeElement.style.zIndex);
 
     // annoyingly, the canvas element has a border-box sizing, so we have to subtract the border
 
@@ -386,10 +382,9 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
 
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
-    console.log(this.hostRef.nativeElement.clientWidth);
     let newCanvaHeight = this.getCanvaHeight();
     let newCanvaWidth = this.getCanvaWidth();
-    console.log(newCanvaHeight, newCanvaWidth);
+
     this.canvasElement.nativeElement.width = newCanvaWidth;
     this.canvasElement.nativeElement.height = newCanvaHeight;
     this.renderer.setSize(newCanvaWidth, newCanvaHeight);
@@ -439,7 +434,7 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
           this.focusingNav = navText;
           this.doneFocus = false;
           // Staring the transition
-          // this.soundWhoosh.play();
+          this.soundWhoosh.play();
           let translate = this.calculateTranslateXY(
             this.camera.position.clone().normalize(),
             navText.position.clone().normalize()
@@ -459,8 +454,8 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
 
           navText.pageIndicatorAnimation = anime({
             targets: navText.pageIndicatorDom,
-            translateX: [translateX * 30, 0],
-            translateY: [translateY * 30, 0],
+            translateX: [translateX * 20, 0],
+            translateY: [translateY * 20, 0],
             scale: [0.5, 1],
             opacity: [0, 1],
             duration: 1500,
@@ -513,8 +508,8 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
 
         anime({
           targets: animationTarget,
-          translateX: [0, translateX * 30],
-          translateY: [0, translateY * 30],
+          translateX: [0, translateX * 10],
+          translateY: [0, translateY * 10],
           opacity: [1, 0],
           duration: 500,
           easing: 'easeOutQuad',

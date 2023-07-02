@@ -44,12 +44,16 @@ export class ProjectPageComponent {
     this.projects.push(
       new Project(
         'Portfolio Site',
-        '/myHead',
+        'Front End Dev',
         'myHead',
         '../../../../assets/graphics/smileyBlack.png',
-        '../../../../assets/imgs/FrontEnd/Portfolio Site.png',
+        '../../../../assets/imgs/PortfolioSite.png',
         '',
-        ['../../../../assets/graphics/smileyBlack.png'],
+        [
+          '../../../../assets/graphics/Angular.png',
+          '../../../../assets/graphics/ThreeJS.svg',
+          '../../../../assets/graphics/AnimeJS.png',
+        ],
         ['Smiley']
       )
     );

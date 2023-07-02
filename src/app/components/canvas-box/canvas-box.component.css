@@ -8,7 +8,7 @@
   justify-content: center;
   border: 2px solid #515151;
   border-radius: 120px 120px 120px 120px;
-  padding: 5%;
+  padding: 4%;
   box-sizing: border-box;
   position: relative;
 }
@@ -96,16 +96,16 @@ canvas {
 }
 .pageIndicatorIcon {
   opacity: 0;
-  width: 1.5vw;
-  height: 1.5vw;
+  width: 1vw;
+  height: 1vw;
   border-radius: 50%;
   background-color: #515151;
   margin-left: 1vw;
   margin-right: 1vw;
 }
 .gravity-icon-frame-circle {
-  width: 1.5vw;
-  height: 1.5vw;
+  width: 1vw;
+  height: 1vw;
   border-radius: 50%;
   border-color: #515151;
   border-style: solid;

@@ -18,26 +18,40 @@ h1 {
 h2 {
   font-family: "Druk Wide";
   font-style: medium italic;
-  font-size: 1em;
+  font-size: 1.5rem;
   color: #282828;
 }
 h3 {
   font-family: "Druk";
   font-style: medium italic;
-  font-size: 3rem;
+  font-size: 4rem;
   color: #282828;
 }
 h4 {
   font-family: "Druk";
   font-style: medium;
-  font-size: 2rem;
+  font-size: 3rem;
   color: #565656;
+}
+a {
+  color: inherit;
+  text-decoration: none;
 }
 footer {
   font-family: "Druk Wide";
   font-style: medium italic;
-  font-size: 2vvem;
+  font-size: 1.5rem;
   color: #282828;
+  transition: all 0.5s ease-in-out;
+}
+footer:hover {
+  transform: translate3d(0, 1px) perspective(1000px) rotateX(10deg);
+  /* text-shadow: #a5a5a5 0 0 1vw; */
+  color: #dcdcdc;
+  background-color: #282828;
+  transition: all 0.5s ease-in-out;
+  padding: 0.8vw;
+  border-radius: 1vw 1vw 1vw 1vw;
 }
 
 *,

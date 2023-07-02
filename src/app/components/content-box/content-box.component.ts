@@ -19,7 +19,7 @@ export class ContentBoxComponent {
 
   animationTargets!: { [key in ContentTag]: ElementRef };
   currentView: ContentTag = ContentTag.NOCONTENT;
-
+  nocontentRandString: string = THREE.MathUtils.generateUUID();
   constructor(private animator: AnimationCorrelatorService) {}
 
   startAnimation(
@@ -28,10 +28,8 @@ export class ContentBoxComponent {
     translateY: number,
     transitionIn: boolean
   ) {
-    console.log(translateX, translateY);
-
-    translateX *= 100;
-    translateY *= 100;
+    translateX *= window.innerWidth / 10;
+    translateY *= window.innerWidth / 10;
 
     if (transitionIn) {
       this.currentView = contentTag;
@@ -43,7 +41,7 @@ export class ContentBoxComponent {
           this.animationTargets[contentTag].nativeElement.children[0].children,
         translateX: [translateX, 0],
         translateY: [translateY, 0],
-        scale: [0.7, 1],
+        scale: [0.9, 1],
         opacity: [0, 1],
         duration: 300,
         easing: 'easeInOutQuad',
@@ -56,7 +54,7 @@ export class ContentBoxComponent {
         translateX: [0, translateX],
         translateY: [0, translateY],
         opacity: [1, 0],
-        scale: [1, 0.7],
+        scale: [1, 0.9],
         duration: 300,
         easing: 'easeInOutQuad',
         delay: anime.stagger(20),
@@ -84,5 +82,11 @@ export class ContentBoxComponent {
         data.transitionIn
       );
     });
+    this.animate();
+  }
+  animate() {
+    requestAnimationFrame(() => this.animate());
+    let dateTime = new Date();
+    this.nocontentRandString = dateTime.toString();
   }
 }

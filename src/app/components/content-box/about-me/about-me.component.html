@@ -1,11 +1,74 @@
 <h1 class="top-left-text">HI, MY NAME IS KEPING LE</h1>
+<!-- <h1 #topLeftTextClip class="top-left-text overlay inverted clipped">asdasd</h1> -->
 <img class="top-left-graphic" src="assets/graphics/aboutMeTopLeftGraphic.png" />
-<img class="background-image" />
-<div class="spacer"></div>
-<div class="bottom-right-text-container">
-  <h2 class="bottom-right-text">Full Stack Dev</h2>
-  <h2 class="bottom-right-text">wanna be designer</h2>
-  <h2 class="bottom-right-text">used to be photographer</h2>
-  <h2 class="bottom-right-text">actually snowboarding coach</h2>
-  <h2 class="bottom-right-text">UTSC 2023 CompSci Gradutes</h2>
+<div #centerImageContainer class="background-image-container">
+  <div #centerImage class="background-image-base"></div>
+  <div
+    #centerImageOverlay
+    class="background-image-overlay clipped overlay"
+  ></div>
 </div>
+
+<div class="spacer"></div>
+
+<div class="bottom-right-text-container">
+  <div class="bottom-row">
+    <div class="spacer"></div>
+    <h2 class="bottom-right-text">Full Stack Dev</h2>
+  </div>
+  <div class="bottom-row">
+    <div class="spacer"></div>
+    <h2 class="bottom-right-text">A wanna-be designer</h2>
+  </div>
+  <div class="bottom-row">
+    <div class="spacer"></div>
+    <h2 class="bottom-right-text">Used to be photographer</h2>
+  </div>
+  <div class="bottom-row">
+    <div class="spacer"></div>
+    <h2 class="bottom-right-text">Actually snowboarding instructor</h2>
+  </div>
+
+  <div
+    #bottomRightTextOverlay
+    class="bottom-right-text-container overlay clipped"
+  >
+    <div class="bottom-row">
+      <div class="spacer"></div>
+      <h2 class="bottom-right-text inverted">Build stuff as I learn.</h2>
+    </div>
+    <div class="bottom-row">
+      <div class="spacer"></div>
+      <h2 class="bottom-right-text inverted">Design stuff as I copy.</h2>
+    </div>
+    <div class="bottom-row">
+      <div class="spacer"></div>
+      <h2 class="bottom-right-text inverted">
+        <a
+          href="https://lkpklkkle7bc4.myportfolio.com/copy-of-some-videos"
+          target="_blank"
+          >Check out my dusty photo gallery</a
+        >
+      </h2>
+    </div>
+    <div class="bottom-row">
+      <div class="spacer"></div>
+      <h2 class="bottom-right-text inverted">
+        -------- I love Ryan Knapton !!!! --------
+      </h2>
+    </div>
+
+    <div class="bottom-row">
+      <div class="spacer"></div>
+      <h2 class="bottom-right-text inverted"></h2>
+    </div>
+  </div>
+</div>
+
+<div
+  #mouseCircle
+  *ngIf="mouseIsHere"
+  id="mouse-circle"
+  [style.top]="mouseTop"
+  [style.left]="mouseLeft"
+></div>
