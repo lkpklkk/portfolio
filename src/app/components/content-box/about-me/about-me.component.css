@@ -24,7 +24,7 @@
   background-repeat: no-repeat;
   border: 0;
   border-image-width: 0;
-  background-image: url("../../../../assets/graphics/aboutMeCenterGraphic.png");
+  background-image: url("/assets/graphics/aboutMeCenterGraphic.png");
 }
 .overlay {
   position: absolute;
@@ -44,7 +44,7 @@
   background-repeat: no-repeat;
   border: 0;
   border-image-width: 0;
-  background-image: url("../../../../assets/graphics/aboutMeCenterGraphicOverlay.png");
+  background-image: url("/assets/graphics/aboutMeCenterGraphicOverlay.png");
 }
 
 .top-left-text {
