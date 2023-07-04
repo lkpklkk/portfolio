@@ -43,8 +43,8 @@ export class ContentBoxComponent {
         translateY: [translateY, 0],
         scale: [0.9, 1],
         opacity: [0, 1],
-        duration: 300,
-        easing: 'easeInOutQuad',
+        duration: 1000,
+        easing: 'easeOutElastic(2, .5)',
         delay: anime.stagger(20),
       });
     } else {
@@ -55,8 +55,8 @@ export class ContentBoxComponent {
         translateY: [0, translateY],
         opacity: [1, 0],
         scale: [1, 0.9],
-        duration: 300,
-        easing: 'easeInOutQuad',
+        duration: 500,
+        easing: 'easeOutQuad',
         delay: anime.stagger(20),
         complete: () => {
           if (this.currentView == contentTag)

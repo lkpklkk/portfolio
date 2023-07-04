@@ -46,6 +46,8 @@ export class AboutMeComponent implements AfterViewInit {
   @HostListener('mouseleave', ['$event'])
   onMouseLeave(event: MouseEvent) {
     this.mouseIsHere = false;
+    this.bottomRightTextOverlay.nativeElement.style.setProperty('--x', `0px`);
+    this.bottomRightTextOverlay.nativeElement.style.setProperty('--y', `0px`);
   }
 
   @HostListener('window:mousemove', ['$event'])

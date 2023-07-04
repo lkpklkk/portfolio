@@ -268,3 +268,16 @@ span {
 .align-items-center {
   align-items: center;
 }
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+::-webkit-scrollbar {
+  width: 20px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #4a4a4a;
+  border-radius: 20px;
+  border: 6px solid transparent;
+  background-clip: content-box;
+}
