@@ -278,6 +278,7 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
   soundInit() {
     this.soundWhoosh = new HOWL.Howl({
       src: ['../../../assets/sounds/whoosh/1.mp3'],
+      volume: 0.3,
     });
 
     this.soundClick = new HOWL.Howl({

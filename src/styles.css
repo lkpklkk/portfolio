@@ -143,11 +143,14 @@ body {
 p {
   font-family: "Druk";
   font-style: medium;
-  font-size: 0.9rem;
+  font-size: 1.2rem;
   line-height: 1.5em;
   color: #282828;
   margin-top: 0px;
   margin-bottom: 0px;
+}
+span {
+  font-size: 1rem;
 }
 
 .highlight {
