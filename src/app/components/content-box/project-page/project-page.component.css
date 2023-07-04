@@ -31,14 +31,19 @@
 }
 
 #techIcon {
-  width: 2.5vw;
-  height: 2.5vw;
+  width: 2.4vw;
+  height: 2.4vw;
   margin-left: 0.5vw;
   margin-right: 0.5vw;
   margin-top: 0.5vh;
   margin-bottom: 0.5vh;
+  transition: 0.2s;
+  padding: 0.1vw;
 }
-
+#techIcon:hover {
+  scale: 1.3;
+  transition: 0.8s;
+}
 #contentBar {
   justify-content: space-between;
   align-items: center;

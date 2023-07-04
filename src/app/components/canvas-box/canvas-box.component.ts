@@ -16,12 +16,12 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { navText } from './navText';
 import { HostListener } from '@angular/core';
 import { ContentTag } from 'src/app/contentTag';
-import { AnimationCorrelatorService } from 'src/app/animation-correlator.service';
+import { AnimationCorrelatorService } from 'src/app/services/animation-correlator.service';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { Font, FontLoader } from 'three/examples/jsm/loaders/FontLoader';
 import * as TWEEN from '@tweenjs/tween.js';
 import * as HOWL from 'howler';
-import { Conditional, NONE_TYPE } from '@angular/compiler';
+import { LoaderService } from 'src/app/services/loader.service';
 
 @Component({
   selector: 'app-canvas-box',
@@ -88,7 +88,8 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
 
   constructor(
     private hostRef: ElementRef,
-    private animator: AnimationCorrelatorService
+    private animator: AnimationCorrelatorService,
+    private loaderService: LoaderService
   ) {}
   getCanvaWidth() {
     let containerStyle = getComputedStyle(this.hostRef.nativeElement);
@@ -128,8 +129,32 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
     this.createScene();
     this.hintInit();
     this.animate();
+    this.createLoadedAnimation();
   }
 
+  createLoadedAnimation() {
+    this.loaderService.loaded.subscribe(() => {
+      this.controls.enabled = false;
+      const numRotationY = 1;
+      const numRotationX = 1;
+      const fullRotation = Math.PI * 2;
+      new TWEEN.Tween(this.scene.scale).to({ x: 1, y: 1, z: 1 }, 1000).start();
+      new TWEEN.Tween(this.scene.rotation)
+        .to(
+          {
+            x: numRotationX * fullRotation,
+            y: numRotationY * fullRotation,
+            z: 0,
+          },
+          1000
+        )
+        .easing(TWEEN.Easing.Quadratic.Out)
+        .start()
+        .onComplete(() => {
+          this.controls.enabled = true;
+        });
+    });
+  }
   addNavText() {
     let navSpheres = [
       new navText(
@@ -230,6 +255,7 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
     fontLoader.load('/assets/fonts/Impact_Regular.json', (font) => {
       this.navFont = font;
       this.addNavText();
+      this.loaderService.setTextModelLoaded();
     });
     // load models
     const gltfLoader = new GLTFLoader();
@@ -243,6 +269,7 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
           this.headCenter.z
         );
         this.scene.add(this.headModel);
+        this.loaderService.setHeadModelLoaded();
       },
       undefined,
       function (error) {
@@ -274,6 +301,8 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
     this.scene.add(ambientLight);
     this.addTorus();
     this.addAxisLines();
+
+    this.scene.scale.set(0.1, 0.1, 0.1);
   }
   soundInit() {
     this.soundWhoosh = new HOWL.Howl({

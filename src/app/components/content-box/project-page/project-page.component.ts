@@ -56,7 +56,7 @@ export class ProjectPageComponent {
           '/assets/graphics/ThreeJS.svg',
           '/assets/graphics/AnimeJS.png',
         ],
-        ['Smiley']
+        ['Angular', 'ThreeJS', 'AnimeJS']
       )
     );
     this.projects.push(

@@ -1,0 +1,19 @@
+:host {
+  position: fixed; /* Change to 'fixed' instead of 'absolute' */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #f7f7f7;
+  display: flex; /* Add 'flex' display property */
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* Center the loading content */
+  text-align: center;
+  z-index: 10; /* Set a higher z-index to ensure it covers other elements */
+  opacity: 1; /* Set the opacity to 1 */
+}
+.scribbleSvg {
+  width: 30%;
+  height: auto;
+}

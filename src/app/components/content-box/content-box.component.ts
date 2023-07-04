@@ -1,6 +1,6 @@
 import anime from 'animejs';
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { AnimationCorrelatorService } from 'src/app/animation-correlator.service';
+import { AnimationCorrelatorService } from 'src/app/services/animation-correlator.service';
 import { ContentTag } from 'src/app/contentTag';
 import * as THREE from 'three';
 

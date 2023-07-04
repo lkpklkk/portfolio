@@ -12,6 +12,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HeaderComponent } from './components/header/header.component';
 import { AboutMeComponent } from './components/content-box/about-me/about-me.component';
 import { ProjectPageComponent } from './components/content-box/project-page/project-page.component';
+import { LoadingComponent } from './components/loading/loading.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { ProjectPageComponent } from './components/content-box/project-page/proj
     HeaderComponent,
     AboutMeComponent,
     ProjectPageComponent,
+    LoadingComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, BrowserAnimationsModule],
   providers: [],

@@ -6,7 +6,7 @@
   height: 100%;
   align-items: center;
   justify-content: center;
-  border: 2px solid #515151;
+  border: 2px solid #282828;
   border-radius: 120px 120px 120px 120px;
   padding: 4%;
   box-sizing: border-box;
@@ -84,7 +84,7 @@ canvas {
 
 #turnIcon {
   width: 3vw;
-  color: #515151;
+  color: #282828;
   height: auto;
   object-fit: contain;
   margin-right: 1vw;
