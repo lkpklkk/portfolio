@@ -45,8 +45,17 @@
   class="overlay-bottom-container"
 >
   <div>
-    <span class="gravity-icon-frame-circle"></span>
-    <span class="gravity-icon-frame-circle"></span>
-    <span class="gravity-icon-frame-circle"></span>
+    <span
+      (click)="onClickPageIndicator(ContentTag.ABOUTME)"
+      class="gravity-icon-frame-circle"
+    ></span>
+    <span
+      (click)="onClickPageIndicator(ContentTag.PROJECTS)"
+      class="gravity-icon-frame-circle"
+    ></span>
+    <span
+      (click)="onClickPageIndicator(ContentTag.CREDITS)"
+      class="gravity-icon-frame-circle"
+    ></span>
   </div>
 </div>

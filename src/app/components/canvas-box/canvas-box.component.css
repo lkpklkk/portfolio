@@ -64,7 +64,7 @@ canvas {
   position: absolute;
   bottom: 0;
   left: 0;
-  z-index: -1;
+  z-index: 2;
   width: 100%;
   align-items: center;
   display: flex;
@@ -96,19 +96,36 @@ canvas {
 }
 .pageIndicatorIcon {
   opacity: 0;
-  width: 1vw;
-  height: 1vw;
+  width: 1.2vw;
+  height: 1.2vw;
   border-radius: 50%;
   background-color: #515151;
   margin-left: 1vw;
   margin-right: 1vw;
 }
 .gravity-icon-frame-circle {
-  width: 1vw;
-  height: 1vw;
+  width: 1.2vw;
+  height: 1.2vw;
   border-radius: 50%;
   border-color: #515151;
   border-style: solid;
   margin-left: 1vw;
   margin-right: 1vw;
+  transition: all 0.2s ease-in-out;
+}
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.gravity-icon-frame-circle:hover {
+  cursor: pointer;
+  border: 2px dotted #515151;
+  scale: 1.5;
+  animation: rotate 2s linear infinite;
+  transition: all 0.2s ease-in-out;
 }

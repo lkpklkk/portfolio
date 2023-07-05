@@ -30,15 +30,15 @@ export class ContentBoxComponent {
   ) {
     translateX *= window.innerWidth / 10;
     translateY *= window.innerWidth / 10;
+    const targets =
+      this.animationTargets[contentTag].nativeElement.children[0]?.children;
 
     if (transitionIn) {
       this.currentView = contentTag;
-      console.log(
-        this.animationTargets[contentTag].nativeElement.children[0].children
-      );
+      if (!targets) return;
       anime({
         targets:
-          this.animationTargets[contentTag].nativeElement.children[0].children,
+          this.animationTargets[contentTag].nativeElement.children[0]?.children,
         translateX: [translateX, 0],
         translateY: [translateY, 0],
         scale: [0.9, 1],
@@ -48,6 +48,11 @@ export class ContentBoxComponent {
         delay: anime.stagger(20),
       });
     } else {
+      if (!targets) {
+        if (this.currentView == contentTag)
+          this.currentView = ContentTag.NOCONTENT;
+        return;
+      }
       anime({
         targets:
           this.animationTargets[contentTag].nativeElement.children[0].children,

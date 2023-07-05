@@ -25,6 +25,7 @@ import { LoaderService } from 'src/app/services/loader.service';
   styleUrls: ['./canvas-box.component.css'],
 })
 export class CanvasBoxComponent implements OnInit, AfterViewInit {
+  ContentTag = ContentTag;
   @ViewChildren('iconOne,iconTwo,iconThree') sideIcons!: ElementRef[];
   @ViewChildren('progressBarOne,progressBarTwo,progressBarThree')
   progressBars!: ElementRef[];
@@ -63,7 +64,8 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
   focusingNav?: navText = undefined;
   doneFocus: boolean = false;
   focusedTimer: number = 0;
-
+  camerDistance: number = 3.5;
+  isFlying: boolean = false;
   cameraSettings = {
     fov: 75,
     near: 0.6,
@@ -74,8 +76,8 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
   controlsSettings = {
     enableDamping: true,
     dampingFactor: 0.04,
-    minDistance: 3.5,
-    maxDistance: 3.5,
+    minDistance: this.camerDistance,
+    maxDistance: this.camerDistance,
     enableZoom: false,
   };
 
@@ -421,6 +423,50 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
     this.camera.aspect = newCanvaWidth / newCanvaHeight;
     this.camera.updateProjectionMatrix();
   }
+  onClickPageIndicator(contentTag: ContentTag) {
+    console.log('clicked');
+    this.navTexts.forEach((navText) => {
+      if (
+        navText.conetentTag === contentTag &&
+        contentTag !== this.focusingNav?.conetentTag
+      ) {
+        console.log(this.focusingNav);
+        if (
+          (this.focusingNav === undefined || this.doneFocus) &&
+          !this.isFlying
+        ) {
+          this.flyTo(navText);
+          this.doneFocus = false;
+        }
+      }
+    });
+  }
+  flyTo(navText: navText) {
+    this.isFlying = true;
+    const targetCoord = navText.position
+      .clone()
+      .add(
+        navText.position.clone().normalize().multiplyScalar(this.camerDistance)
+      );
+    const coords = this.camera.position.clone();
+    new TWEEN.Tween(coords)
+      .to({ x: targetCoord.x, y: targetCoord.y, z: targetCoord.z }, 1000)
+      .easing(TWEEN.Easing.Quadratic.InOut)
+      .onUpdate(() => this.camera.position.set(coords.x, coords.y, coords.z))
+      .onStart(() => {
+        this.controls.enabled = false;
+        console.log('start');
+      })
+      .onComplete(() => {
+        console.log('complete');
+        this.focusingNav = navText;
+        this.isFlying = false;
+        this.focusedTimer = 0;
+        this.doneFocus = true;
+        this.controls.enabled = true;
+      })
+      .start();
+  }
   animate() {
     requestAnimationFrame(() => this.animate());
     TWEEN.update();
@@ -494,20 +540,23 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
           });
         }
 
-        let angleDifference = navText.getAngleDifference();
-        if (angleDifference < 0.1) {
-          this.focusedTimer += 1;
-          if (this.focusedTimer > 100) {
+        // update done focus
+        if (!this.isFlying) {
+          let angleDifference = navText.getAngleDifference();
+          if (angleDifference < 0.1) {
+            this.focusedTimer += 1;
+            if (this.focusedTimer > 100) {
+              this.focusedTimer = 0;
+              this.doneFocus = true;
+              this.controls.enabled = true;
+            }
+          } else {
             this.focusedTimer = 0;
-            this.doneFocus = true;
-            this.controls.enabled = true;
           }
-        } else {
-          this.focusedTimer = 0;
-        }
-        if (!this.doneFocus) {
-          let cameraNudge = navText.gravityPull();
-          this.camera.position.add(cameraNudge);
+          if (!this.doneFocus) {
+            let cameraNudge = navText.gravityPull();
+            this.camera.position.add(cameraNudge);
+          }
         }
       }
     });

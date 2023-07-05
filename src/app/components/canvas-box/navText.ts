@@ -12,7 +12,6 @@ export class navText extends THREE.Mesh {
   active: boolean;
   canvaBox: CanvasBoxComponent;
   conetentTag: ContentTag;
-  isTweening: boolean = false;
   focusing: boolean = false;
   focused: boolean = false;
   focusedFrame: number = 0;
@@ -73,30 +72,6 @@ export class navText extends THREE.Mesh {
     (this.material as THREE.MeshStandardMaterial).color.set(this.originalColor);
   }
 
-  onClicked(e: any) {
-    const targetCoord = this.position
-      .clone()
-      .add(this.position.clone().normalize().multiplyScalar(2));
-    const coords = this.canvaBox.camera.position.clone();
-
-    new TWEEN.Tween(coords)
-      .to({ x: targetCoord.x, y: targetCoord.y, z: targetCoord.z }, 1000)
-      .easing(TWEEN.Easing.Quadratic.InOut)
-      .onUpdate(() =>
-        this.canvaBox.camera.position.set(coords.x, coords.y, coords.z)
-      )
-      .onStart(() => {
-        console.log('start');
-        this.isTweening = true;
-        this.canvaBox.controls.enabled = false;
-      })
-      .onComplete(() => {
-        console.log('complete');
-        this.isTweening = false;
-        this.canvaBox.controls.enabled = true;
-      })
-      .start();
-  }
   private getProjectionOntoPlane() {
     let camera = this.canvaBox.camera;
     let cameraDistance = camera.position.length();
@@ -144,10 +119,6 @@ export class navText extends THREE.Mesh {
   }
 
   isWithinView() {
-    if (this.isTweening) {
-      // means I am going towards the thing
-      return true;
-    }
     let camera = this.canvaBox.camera;
     let angle = camera.position.angleTo(this.position);
     if (angle < Math.PI / 10) {
