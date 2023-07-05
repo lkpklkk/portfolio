@@ -49,7 +49,7 @@ export class ProjectPageComponent {
         <br>I've brought the site to life using <span class='highlight'>ThreeJS</span> and <span class='highlight'>AnimeJS</span> libraries, which are the driving forces behind most of the 3D interactions and animations you'll see on the site.\
         \n In a nutshell, this project isn't just a fun experiment—it's also a practical portfolio website that's ready to showcase my past work and any cool stuff I'll do in the future.",
         'assets/graphics/smileyBlack.png',
-        'assets/imgs/PortfolioSite.png',
+        'assets/imgs/PortfolioSite.jpg',
         '',
         [
           'assets/graphics/Angular.png',
@@ -65,7 +65,7 @@ export class ProjectPageComponent {
         'Full Stack Dev',
         "Using <span class='highlight'>AngularJS</span>, advertisers can showcase their ads, and gamers can try to shoot them down. If they miss, they watch the ad. Incorporating <span class='highlight'>Auth0</span> for security, <span class='highlight'>Socket.IO</span> for real-time play, <span class='highlight'>PostgreSQL</span> for data storage",
         'assets/graphics/stack.svg',
-        'assets/imgs/CounterAds.png',
+        'assets/imgs/CounterAds.jpg',
         '',
         [
           'assets/graphics/SocketIO.png',

@@ -1,4 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
+html {
+  font-size: 1vw;
+}
 body {
   margin: 0px;
   padding: 0px;
@@ -10,14 +13,13 @@ h1 {
   margin-top: 0;
   font-family: "Druk Wide";
   font-style: bold italic;
-  font-size: 1.5em;
+  font-size: 2rem;
   color: #282828;
 }
 h2 {
   font-family: "Druk Wide";
   font-style: medium italic;
-  font-size: 1rem;
-  line-height: 50%;
+  font-size: 1.2rem;
   color: #282828;
 }
 h3 {
@@ -34,7 +36,6 @@ h4 {
 }
 a {
   color: inherit;
-  text-decoration: none;
 }
 footer {
   font-family: "Druk Wide";
@@ -42,6 +43,7 @@ footer {
   font-size: 1.5rem;
   color: #282828;
   transition: all 0.5s ease-in-out;
+  text-decoration: none;
 }
 footer:hover {
   transform: translate3d(0, 1px) perspective(1000px) rotateX(10deg);
@@ -59,6 +61,10 @@ footer:hover {
   box-sizing: border-box;
 }
 
+@font-face {
+  font-family: "Noto Color Emoji";
+  src: url(https://raw.githack.com/googlefonts/noto-emoji/main/fonts/NotoColorEmoji.ttf);
+}
 @font-face {
   font-family: "Druk Wide";
   font-style: medium;
@@ -115,7 +121,7 @@ footer:hover {
 }
 @font-face {
   font-family: "Druk";
-  font-size: super;
+
   src: url("assets/fonts/Druk/DrukText-Super-Trial.otf");
 }
 
@@ -143,25 +149,25 @@ p {
   font-family: "Druk";
   font-style: medium;
   font-size: 1.2rem;
-  line-height: 1.5rem;
   color: #282828;
   margin-top: 0px;
   margin-bottom: 0px;
 }
 span {
   font-size: 1rem;
-
-  padding: 0.2rem;
 }
 
 .highlight {
   color: #f7f7f7;
-
+  font-size: inherit;
   background-color: #282828;
-
-  border-radius: 0.2rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
 }
-
+.emoji {
+  font-family: "Noto Color Emoji";
+  font-size: 1.5rem;
+}
 *,
 ::after,
 ::before {

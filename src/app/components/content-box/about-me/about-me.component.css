@@ -6,14 +6,12 @@
   width: 100%;
   height: 100%;
 }
-.top-left-text {
-  font-size: 2vw;
-}
+
 .background-image-container {
   position: absolute;
   left: 0;
   width: 100%;
-  top: 30%;
+  top: 25%;
   height: 50%;
 }
 .background-image-base {
@@ -58,7 +56,6 @@
 }
 
 .bottom-right-text-container {
-  flex-basis: 2;
   align-items: right;
   text-align: right;
   justify-content: right;
@@ -66,14 +63,17 @@
   flex-direction: column;
 }
 .bottom-right-text {
-  padding: 5px;
   width: fit-content;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+  margin-right: 0.2rem;
+  padding: 0.1rem;
+  border-radius: 5px 5px 5px 5px;
+  border: none;
 }
-.inverted {
-  background-color: #e0e0e0;
-  filter: invert(1);
+.bottom-right-inverted {
+  background-color: #282828;
+  color: #f7f7f7;
 }
 
 #mouse-circle {
@@ -88,8 +88,9 @@
 .clipped {
   clip-path: circle(3vw at var(--x, 0) var(--y, 0));
 }
-.bottom-row {
+.aboutme-row {
   display: flex;
   flex-direction: row;
   justify-self: space-between;
+  align-items: center;
 }
