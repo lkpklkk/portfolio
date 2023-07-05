@@ -1,0 +1,11 @@
+Model Information:
+* title:	Planes of Head Male
+* source:	https://sketchfab.com/3d-models/planes-of-head-male-6af48bf77ec64b379a262effdc3f819c
+* author:	ImJeno (https://sketchfab.com/ImJeno)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Planes of Head Male" (https://sketchfab.com/3d-models/planes-of-head-male-6af48bf77ec64b379a262effdc3f819c) by ImJeno (https://sketchfab.com/ImJeno) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
