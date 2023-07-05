@@ -77,7 +77,6 @@ export class LoadingComponent implements AfterViewInit {
       easing: 'easeOutQuad',
       complete: () => {
         this.stopAnimation = true;
-        this.loadingService.loadingScreenFade();
       },
     });
   }

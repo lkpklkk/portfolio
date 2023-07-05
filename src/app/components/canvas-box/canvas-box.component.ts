@@ -1,11 +1,7 @@
 import {
   Component,
-  ComponentFactoryResolver,
-  Directive,
   ElementRef,
-  Host,
   OnInit,
-  QueryList,
   ViewChild,
   ViewChildren,
 } from '@angular/core';
@@ -138,6 +134,7 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
       const numRotationY = 1;
       const numRotationX = 1;
       const fullRotation = Math.PI * 2;
+      this.soundWhoosh.play();
       new TWEEN.Tween(this.scene.scale).to({ x: 1, y: 1, z: 1 }, 1000).start();
       new TWEEN.Tween(this.scene.rotation)
         .to(
@@ -341,11 +338,15 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
   // @HostListener('window:mousemove', ['$event'])
   // onMouseMove(event: MouseEvent) {
   //   const mouse = new THREE.Vector2();
-  //   const mousePosX = event.clientX - this.boundingRect.left;
-  //   const mousePosY = event.clientY - this.boundingRect.top;
+  //   const boundingRect =
+  //     this.canvasElement.nativeElement.getBoundingClientRect();
+  //   const mousePosX = event.clientX - boundingRect.left;
+  //   const mousePosY = event.clientY - boundingRect.top;
+  //   const getCanvaWidth = this.getCanvaWidth();
+  //   const getCanvaHeight = this.getCanvaHeight();
   //   mouse.set(
-  //     (mousePosX / this.curCanvaWidth) * 2 - 1,
-  //     -(mousePosY / this.curCanvaHeight) * 2 + 1
+  //     (mousePosX / getCanvaWidth) * 2 - 1,
+  //     -(mousePosY / getCanvaHeight) * 2 + 1
   //   );
   //   this.raycaster.setFromCamera(mouse, this.camera);
   //   this.intersects = this.raycaster.intersectObjects(
@@ -359,7 +360,6 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
   //       if (hoveredItem.object instanceof navText) {
   //         hoveredItem.object.onPointerOut(hoveredItem);
   //       }
-
   //       delete this.hovered[key];
   //     }
   //   });
@@ -381,7 +381,8 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
     // this.intersects.forEach((hit) => {
     //   // Call onClick
     //   if (hit.object instanceof navText) {
-    //     (hit.object as navText).onClicked(event);
+    //     // (hit.object as navText).onClicked(event);
+    //     this.soundClick.play();
     //   }
     // });
     if (!this.turnHintUsed) {
@@ -414,7 +415,6 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
   onResize(event: Event) {
     let newCanvaHeight = this.getCanvaHeight();
     let newCanvaWidth = this.getCanvaWidth();
-
     this.canvasElement.nativeElement.width = newCanvaWidth;
     this.canvasElement.nativeElement.height = newCanvaHeight;
     this.renderer.setSize(newCanvaWidth, newCanvaHeight);

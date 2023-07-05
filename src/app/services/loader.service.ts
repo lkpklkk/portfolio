@@ -5,7 +5,7 @@ import { EventEmitter, Injectable, Output } from '@angular/core';
 })
 export class LoaderService {
   loaded: EventEmitter<boolean> = new EventEmitter<boolean>();
-  loadingScreenFaded: EventEmitter<boolean> = new EventEmitter<boolean>();
+
   headModelLoaded = false;
   textModelLoaded = false;
   imgLoaded = false;
@@ -32,8 +32,5 @@ export class LoaderService {
       }
     }
     this.loaded.emit(true);
-  }
-  loadingScreenFade() {
-    this.loadingScreenFaded.emit(true);
   }
 }

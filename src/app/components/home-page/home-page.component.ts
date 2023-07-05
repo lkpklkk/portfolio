@@ -5,6 +5,7 @@ import {
   Renderer2,
   ViewChild,
 } from '@angular/core';
+import { set } from 'animejs';
 import { LoaderService } from 'src/app/services/loader.service';
 
 @Component({
@@ -20,8 +21,10 @@ export class HomePageComponent implements OnInit {
     private renderer: Renderer2
   ) {}
   ngOnInit(): void {
-    this.loadingService.loadingScreenFaded.subscribe((loaded) => {
-      this.loaded = loaded;
+    this.loadingService.loaded.subscribe((loaded) => {
+      setTimeout(() => {
+        this.loaded = loaded;
+      }, 1000);
     });
   }
 
