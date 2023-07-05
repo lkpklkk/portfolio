@@ -73,7 +73,6 @@ export class LoadingComponent implements AfterViewInit {
     anime({
       targets: this.hostRef.nativeElement,
       opacity: 0,
-      scale: 2,
       duration: 1000,
       easing: 'easeOutQuad',
       complete: () => {
