@@ -252,7 +252,7 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
     // 3d text loader
     const fontLoader = new FontLoader();
 
-    fontLoader.load('/assets/fonts/Impact_Regular.json', (font) => {
+    fontLoader.load('assets/fonts/Impact_Regular.json', (font) => {
       this.navFont = font;
       this.addNavText();
       this.loaderService.setTextModelLoaded();
@@ -260,7 +260,7 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
     // load models
     const gltfLoader = new GLTFLoader();
     gltfLoader.load(
-      '/assets/models/scene.gltf',
+      'assets/models/scene.gltf',
       (gltf) => {
         this.headModel = gltf.scene;
         this.headModel.position.set(
@@ -306,12 +306,12 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
   }
   soundInit() {
     this.soundWhoosh = new HOWL.Howl({
-      src: ['/assets/sounds/whoosh/1.mp3'],
+      src: ['assets/sounds/whoosh/1.mp3'],
       volume: 0.3,
     });
 
     this.soundClick = new HOWL.Howl({
-      src: ['/assets/sounds/click.mp3'],
+      src: ['assets/sounds/click.mp3'],
     });
   }
   hintInit() {

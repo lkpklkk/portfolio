@@ -19,6 +19,8 @@ export class AboutMeComponent implements AfterViewInit {
   @ViewChild('centerImageOverlay') centerImageOverlay!: ElementRef;
   @ViewChild('mouseCircle') mouseCircle!: ElementRef;
   @ViewChild('bottomRightTextOverlay') bottomRightTextOverlay!: ElementRef;
+  centerImageOverlayUrl = 'assets/graphics/aboutMeCenterGraphicOverlay.png';
+  centerImageUrl = 'assets/graphics/aboutMeCenterGraphic.png';
   mouseTop = '0px';
   mouseLeft = '0px';
   mouseX = 0;

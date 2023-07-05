@@ -1,15 +1,13 @@
 <h1 class="top-left-text">HI, MY NAME IS KEPING LE</h1>
 <!-- <h1 #topLeftTextClip class="top-left-text overlay inverted clipped">asdasd</h1> -->
-<img
-  class="top-left-graphic"
-  src="/assets/graphics/aboutMeTopLeftGraphic.png"
-/>
+<img class="top-left-graphic" src="assets/graphics/aboutMeTopLeftGraphic.png" />
 <div #centerImageContainer class="background-image-container">
-  <div #centerImage class="background-image-base"></div>
-  <div
+  <img #centerImage class="background-image-base" [src]="centerImageUrl" />
+  <img
     #centerImageOverlay
     class="background-image-overlay clipped overlay"
-  ></div>
+    [src]="centerImageOverlayUrl"
+  />
 </div>
 
 <div class="spacer"></div>
