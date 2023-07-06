@@ -299,7 +299,7 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
     this.scene.add(ambientLight);
     this.addTorus();
-    this.addAxisLines();
+    // this.addAxisLines();
 
     this.scene.scale.set(0.1, 0.1, 0.1);
   }
