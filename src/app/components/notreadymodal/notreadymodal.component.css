@@ -12,13 +12,25 @@
   position: absolute;
   width: 80%;
   height: 50%;
-  color: #282828;
+
   /* box-shadow: 10px 5px 5px #282828; */
-  background-color: #f1f1f1;
+  /* background-color: #f1f1f1; */
   border-radius: 1rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   z-index: 100;
+}
+h2 {
+  font-size: large;
+  font-style: normal;
+  margin: 2vw 2vw;
+  color: #f1f1f1;
+}
+p {
+  text-align: center;
+  margin: 2vw 2vw;
+  font-size: medium;
+  color: #f1f1f1;
 }
