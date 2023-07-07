@@ -18,19 +18,19 @@ h1 {
 }
 h2 {
   font-family: "Druk Wide";
-  font-style: medium italic;
+  font-style: italic;
   font-size: 1.2rem;
   color: #282828;
 }
 h3 {
   font-family: "Druk";
-  font-style: medium italic;
+  font-style: italic;
   font-size: 3rem;
   color: #282828;
 }
 h4 {
   font-family: "Druk";
-  font-style: medium;
+  font-style: italic;
   font-size: 2rem;
   color: #565656;
 }
@@ -66,80 +66,42 @@ footer:hover {
 }
 @font-face {
   font-family: "Druk Wide";
-  font-style: medium;
+  font-style: normal;
+  font-weight: medium;
   src: url("assets/fonts/DrukWide/DrukTextWide-Medium-Trial.otf");
 }
 @font-face {
   font-family: "Druk Wide";
-  font-style: heavy;
+  font-style: normal;
+  font-weight: heavy;
   src: url("assets/fonts/DrukWide/DrukTextWide-Heavy-Trial.otf");
 }
 @font-face {
   font-family: "Druk Wide";
-  font-style: heavy italic;
+  font-style: italic;
+  font-weight: heavy;
   src: url("assets/fonts/DrukWide/DrukTextWide-HeavyItalic-Trial.otf");
 }
 @font-face {
   font-family: "Druk Wide";
-  font-style: medium italic;
+  font-style: italic;
+  font-weight: medium;
   src: url("assets/fonts/DrukWide/DrukTextWide-MediumItalic-Trial.otf");
 }
 @font-face {
-  font-family: "Druk Wide";
-  font-style: super;
-  src: url("assets/fonts/DrukWide/DrukTextWide-Super-Trial.otf");
-}
-@font-face {
-  font-family: "Druk Wide";
-  font-style: super italic;
-  src: url("assets/fonts/DrukWide/DrukTextWide-SuperItalic-Trial.otf");
-}
-
-@font-face {
   font-family: "Druk";
-  font-style: bold;
-  src: url("assets/fonts/Druk/DrukText-Bold-Trial.otf");
-}
-
-@font-face {
-  font-family: "Druk";
-  font-style: bold italic;
-  src: url("assets/fonts/Druk/DrukText-BoldItalic-Trial.otf");
-}
-
-@font-face {
-  font-family: "Druk";
-  font-style: medium;
+  font-style: normal;
+  font-weight: medium;
   src: url("assets/fonts/Druk/DrukText-Medium-Trial.otf");
 }
 
 @font-face {
   font-family: "Druk";
-  font-style: medium italic;
+  font-style: italic;
+  font-weight: medium;
   src: url("assets/fonts/Druk/DrukText-MediumItalic-Trial.otf");
 }
-@font-face {
-  font-family: "Druk";
 
-  src: url("assets/fonts/Druk/DrukText-Super-Trial.otf");
-}
-
-@font-face {
-  font-family: "Druk";
-  font-style: super italic;
-  src: url("assets/fonts/Druk/DrukText-SuperItalic-Trial.otf");
-}
-
-@font-face {
-  font-family: "Druk";
-  font-style: heavy;
-  src: url("assets/fonts/Druk/DrukText-Heavy-Trial.otf");
-}
-@font-face {
-  font-family: "Druk";
-  font-style: heavy italic;
-  src: url("assets/fonts/Druk/DrukText-HeavyItalic-Trial.otf");
-}
 body {
   margin: 0;
 }

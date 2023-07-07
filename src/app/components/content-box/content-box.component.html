@@ -17,6 +17,10 @@
   <app-project-page></app-project-page>
 </div>
 
-<div #credits [hidden]="currentView !== contentTag.CREDITS">
-  SPECIAL THANNKS TO
+<div
+  #skills
+  [hidden]="currentView !== contentTag.SKILLS"
+  class="content-container"
+>
+  <app-skills></app-skills>
 </div>

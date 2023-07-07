@@ -1,0 +1,154 @@
+:host {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.center-container {
+  width: 100%;
+  height: 60%;
+}
+.image-background-container {
+  position: absolute;
+  top: 10%;
+  width: 100%;
+  height: 100%;
+}
+.image-background-container > img {
+  width: 100%;
+  height: 100%;
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: 0;
+  border-image-width: 0;
+}
+.center-overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+}
+
+.center-overlay::-webkit-scrollbar {
+  width: 0px !important;
+  background-color: white !important;
+}
+
+.center-overlay::-webkit-scrollbar-thumb {
+  width: 0px !important;
+  background-color: whitesmoke !important;
+  border-radius: 0px !important;
+}
+
+.row {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: center;
+}
+
+.title-row-text {
+  margin: 0 1rem 0 1rem;
+  font-size: 2rem;
+  font-family: "Druk Wide";
+  font-style: normal;
+  /* transform: scaleY(0.8); */
+}
+
+.spacer-border {
+  width: 10%;
+  height: auto;
+}
+.spacer-border-round {
+  width: 10%;
+  background-color: #282828;
+  position: relative;
+  overflow: hidden;
+  margin: 0.1rem 1rem;
+  /* border: 2px solid whitesmoke; */
+  border-radius: 5rem;
+  align-self: stretch;
+}
+.skills-container {
+  width: 40%;
+  margin: 1rem 0.5rem 2rem 0.5rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-row-gap: 0.5rem;
+  grid-column-gap: 0.5rem;
+}
+.skills {
+  color: #282828;
+  height: 3rem;
+  padding: 0 0.2rem;
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  transition: all 0.2s ease-in-out;
+}
+.skills:hover {
+  color: #dcdcdc;
+  background-color: #282828;
+  border-radius: 1rem;
+  transform: scale(1.1);
+  transition: all 0.2s ease-in-out;
+}
+.skill-name {
+  font-family: "Druk";
+
+  font-style: normal;
+  font-size: 1.5rem;
+  margin-left: 1rem;
+  border: 2px soid #282828;
+  padding: 0.1rem 0.5rem;
+  border-radius: 1rem;
+}
+
+.skill-icon {
+  width: 1.5rem;
+  height: auto;
+  margin-left: 2rem;
+}
+.spacer {
+  flex: 1;
+}
+#snowboarder {
+  position: absolute;
+  top: 20%;
+  left: 55%;
+  width: 2rem;
+  height: auto;
+  z-index: 1;
+  transition: all 0.2s ease-in-out;
+}
+.soft-skill-section {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.flowing-text-container {
+  width: 100%;
+  flex: 1;
+  padding: 0 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+#flowing-text {
+  font-family: "Druk Wide";
+  font-style: italic;
+  font-weight: heavy;
+  font-size: 3rem;
+  fill: #282828;
+  text-align: center;
+}

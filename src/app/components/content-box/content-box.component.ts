@@ -14,7 +14,7 @@ export class ContentBoxComponent {
   contentTag = ContentTag;
   @ViewChild('aboutMe') aboutMe!: ElementRef;
   @ViewChild('projects') projects!: ElementRef;
-  @ViewChild('credits') credits!: ElementRef;
+  @ViewChild('skills') skills!: ElementRef;
   @ViewChild('neutral') neutral!: ElementRef;
 
   animationTargets!: { [key in ContentTag]: ElementRef };
@@ -76,7 +76,7 @@ export class ContentBoxComponent {
       [ContentTag.NOCONTENT]: this.neutral,
       [ContentTag.ABOUTME]: this.aboutMe,
       [ContentTag.PROJECTS]: this.projects,
-      [ContentTag.CREDITS]: this.credits,
+      [ContentTag.SKILLS]: this.skills,
     };
     console.log(this.animationTargets);
     this.animator.animationDataUploaded.subscribe((data) => {

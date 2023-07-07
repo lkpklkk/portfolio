@@ -13,6 +13,8 @@ import { HeaderComponent } from './components/header/header.component';
 import { AboutMeComponent } from './components/content-box/about-me/about-me.component';
 import { ProjectPageComponent } from './components/content-box/project-page/project-page.component';
 import { LoadingComponent } from './components/loading/loading.component';
+import { SkillsComponent } from './components/content-box/skills/skills.component';
+import { NotreadymodalComponent } from './components/notreadymodal/notreadymodal.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +28,8 @@ import { LoadingComponent } from './components/loading/loading.component';
     AboutMeComponent,
     ProjectPageComponent,
     LoadingComponent,
+    SkillsComponent,
+    NotreadymodalComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, BrowserAnimationsModule],
   providers: [],

@@ -1,3 +1,7 @@
+<app-notreadymodal
+  *ngIf="isMobile"
+  (click)="closeNotModal()"
+></app-notreadymodal>
 <app-loading *ngIf="!loaded"></app-loading>
 <img
   #backgroundImage

@@ -8,6 +8,7 @@ import {
 import { set } from 'animejs';
 import { LoaderService } from 'src/app/services/loader.service';
 
+import { isPlatformBrowser } from '@angular/common';
 @Component({
   selector: 'app-home-page',
   templateUrl: './home-page.component.html',
@@ -16,11 +17,19 @@ import { LoaderService } from 'src/app/services/loader.service';
 export class HomePageComponent implements OnInit {
   @ViewChild('backgroundImage') backgroundImage!: ElementRef;
   loaded = false;
+  isMobile = false;
   constructor(
     private loadingService: LoaderService,
     private renderer: Renderer2
   ) {}
   ngOnInit(): void {
+    const userAgent = navigator.userAgent.toLowerCase();
+
+    // Check if the User Agent contains keywords indicating a mobile platform
+    this.isMobile =
+      /android|webos|iphone|ipad|ipod|blackberry|windows phone/i.test(
+        userAgent
+      );
     this.loadingService.loaded.subscribe((loaded) => {
       setTimeout(() => {
         this.loaded = loaded;
@@ -36,5 +45,8 @@ export class HomePageComponent implements OnInit {
     this.renderer.listen(this.backgroundImage.nativeElement, 'load', () => {
       this.loadingService.setImgLoaded();
     });
+  }
+  closeNotModal() {
+    this.isMobile = false;
   }
 }

@@ -52,9 +52,9 @@ export class ProjectPageComponent {
         'assets/imgs/PortfolioSite.jpg',
         '',
         [
-          'assets/graphics/Angular.png',
-          'assets/graphics/ThreeJS.svg',
-          'assets/graphics/AnimeJS.png',
+          'assets/icons/Angular.svg',
+          'assets/icons/ThreeJS.svg',
+          'assets/icons/AnimeJS.png',
         ],
         ['Angular', 'ThreeJS', 'AnimeJS']
       )
@@ -70,12 +70,12 @@ export class ProjectPageComponent {
         'assets/imgs/CounterAds.jpg',
         '',
         [
-          'assets/graphics/SocketIO.png',
-          'assets/graphics/NodeJS.png',
-          'assets/graphics/ExpressJS.png',
-          'assets/graphics/Auth0.png',
-          'assets/graphics/PostgreSQL.png',
-          'assets/graphics/Angular.png',
+          'assets/icons/SocketIO.png',
+          'assets/icons/NodeJS.png',
+          'assets/icons/ExpressJS.svg',
+          'assets/icons/Auth0.png',
+          'assets/icons/PostgreSQL.svg',
+          'assets/icons/Angular.svg',
         ],
         ['SocketIO', 'Node.js', 'Express.js', 'Auth0', 'PostgreSQL', 'Angular']
       )

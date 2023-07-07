@@ -42,8 +42,8 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
   pageIndicatorAbout!: ElementRef;
   @ViewChild('pageIndicatorProjects')
   pageIndicatorProjects!: ElementRef;
-  @ViewChild('pageIndicatorCredits')
-  pageIndicatorCredits!: ElementRef;
+  @ViewChild('pageIndicatorSkills')
+  pageIndicatorSkills!: ElementRef;
   gravityHintContainerAnimation!: anime.AnimeInstance;
   private canvasElement!: ElementRef;
   headModel!: THREE.Group;
@@ -174,11 +174,11 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
       ),
       new navText(
         this,
-        ContentTag.CREDITS,
+        ContentTag.SKILLS,
         this.navFont,
-        'Credits',
+        'Skills',
         new THREE.Vector3(1, -0.4, -1.1),
-        this.pageIndicatorCredits.nativeElement
+        this.pageIndicatorSkills.nativeElement
       ),
     ];
     navSpheres.forEach((navSphere) => {
