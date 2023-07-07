@@ -71,10 +71,10 @@ export class SkillsComponent {
       this.flowingText.nativeElement.getBoundingClientRect().width;
 
     this.boxWidth = overlayRect.width;
-    this.flowTextMaxOffset = this.boxWidth * 0.6;
-    this.flowTextVertiScrollMaxOffset = this.boxWidth * 0.2;
+    this.flowTextMaxOffset = -this.flowingTextWidth * 2;
+    this.flowTextVertiScrollMaxOffset = -this.flowingTextWidth;
 
-    this.flowingTextInitOffset = -this.flowingTextWidth * 2;
+    this.flowingTextInitOffset = this.boxWidth;
     this.init = true;
   }
   updateSnowboarderPosition() {
@@ -126,8 +126,8 @@ export class SkillsComponent {
         this.fakeHoriScrolling = false;
         return;
       }
-      if (this.flowingTextStartOffset < this.flowTextMaxOffset) {
-        this.flowingTextStartOffset += this.fakeHoriScrollingSteps;
+      if (this.flowingTextStartOffset > this.flowTextMaxOffset) {
+        this.flowingTextStartOffset -= this.fakeHoriScrollingSteps;
         this.flowingText.nativeElement.setAttribute(
           'startOffset',
           this.flowingTextStartOffset
@@ -136,10 +136,10 @@ export class SkillsComponent {
     }
     if (event.deltaY < 0) {
       if (
-        this.flowingTextStartOffset >
+        this.flowingTextStartOffset <
         this.flowingTextInitOffset + this.flowTextVertiScrollMaxOffset
       ) {
-        this.flowingTextStartOffset -= this.fakeHoriScrollingSteps;
+        this.flowingTextStartOffset += this.fakeHoriScrollingSteps;
         this.flowingText.nativeElement.setAttribute(
           'startOffset',
           this.flowingTextStartOffset
