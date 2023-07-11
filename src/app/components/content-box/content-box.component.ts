@@ -78,7 +78,7 @@ export class ContentBoxComponent {
       [ContentTag.PROJECTS]: this.projects,
       [ContentTag.SKILLS]: this.skills,
     };
-    console.log(this.animationTargets);
+
     this.animator.animationDataUploaded.subscribe((data) => {
       this.startAnimation(
         data.contentTag,

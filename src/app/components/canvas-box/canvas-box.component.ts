@@ -161,7 +161,7 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
         ContentTag.ABOUTME,
         this.navFont,
         'About Me',
-        new THREE.Vector3(0, 1, 1.1),
+        new THREE.Vector3(0, 1, 1.1).normalize().multiplyScalar(1.5),
         this.pageIndicatorAbout.nativeElement
       ),
       new navText(
@@ -169,7 +169,7 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
         ContentTag.PROJECTS,
         this.navFont,
         'Projects',
-        new THREE.Vector3(0, 0.4, -1.1),
+        new THREE.Vector3(-1, 0.5, -0.2).normalize().multiplyScalar(1.5),
         this.pageIndicatorProjects.nativeElement
       ),
       new navText(
@@ -177,7 +177,7 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
         ContentTag.SKILLS,
         this.navFont,
         'Skills',
-        new THREE.Vector3(1, -0.4, -1.1),
+        new THREE.Vector3(0.5, 0, -0.2).normalize().multiplyScalar(1.5),
         this.pageIndicatorSkills.nativeElement
       ),
     ];
@@ -251,7 +251,7 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
     // 3d text loader
     const fontLoader = new FontLoader();
 
-    fontLoader.load('assets/fonts/Impact_Regular.json', (font) => {
+    fontLoader.load('assets/fonts/Druk_Bold_Italic.json', (font) => {
       this.navFont = font;
       this.addNavText();
       this.loaderService.setTextModelLoaded();
@@ -289,10 +289,16 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
     this.controls.maxDistance = this.controlsSettings.maxDistance;
     this.controls.enableZoom = this.controlsSettings.enableZoom;
 
-    const pointLight = new THREE.PointLight(0xffffff, 0.5);
+    let pointLight = new THREE.PointLight(0xffffff, 0.6);
     pointLight.position.x = 2;
     pointLight.position.y = 2;
     pointLight.position.z = 2;
+    this.scene.add(pointLight);
+
+    pointLight = new THREE.PointLight(0xffffff, 0.4);
+    pointLight.position.x = -5;
+    pointLight.position.y = 0;
+    pointLight.position.z = -5;
     this.scene.add(pointLight);
 
     // add new ambient light
@@ -337,56 +343,9 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
     }
     return [translateX, translateY];
   }
-  // @HostListener('window:mousemove', ['$event'])
-  // onMouseMove(event: MouseEvent) {
-  //   const mouse = new THREE.Vector2();
-  //   const boundingRect =
-  //     this.canvasElement.nativeElement.getBoundingClientRect();
-  //   const mousePosX = event.clientX - boundingRect.left;
-  //   const mousePosY = event.clientY - boundingRect.top;
-  //   const getCanvaWidth = this.getCanvaWidth();
-  //   const getCanvaHeight = this.getCanvaHeight();
-  //   mouse.set(
-  //     (mousePosX / getCanvaWidth) * 2 - 1,
-  //     -(mousePosY / getCanvaHeight) * 2 + 1
-  //   );
-  //   this.raycaster.setFromCamera(mouse, this.camera);
-  //   this.intersects = this.raycaster.intersectObjects(
-  //     this.scene.children,
-  //     true
-  //   );
-  //   Object.keys(this.hovered).forEach((key) => {
-  //     const hit = this.intersects.find((hit) => hit.object.uuid === key);
-  //     if (hit === undefined) {
-  //       const hoveredItem = this.hovered[key];
-  //       if (hoveredItem.object instanceof navText) {
-  //         hoveredItem.object.onPointerOut(hoveredItem);
-  //       }
-  //       delete this.hovered[key];
-  //     }
-  //   });
-
-  //   this.intersects.forEach((hit) => {
-  //     // If a hit has not been flagged as hovered we must call onPointerOver
-  //     if (!this.hovered[hit.object.uuid]) {
-  //       this.hovered[hit.object.uuid] = hit;
-  //       // check if the object implements onPointerOver
-  //       if (hit.object instanceof navText) {
-  //         (hit.object as navText).onPointerOver(hit);
-  //       }
-  //     }
-  //   });
-  // }
 
   @HostListener('window:click', ['$event'])
   onClick(event: MouseEvent) {
-    // this.intersects.forEach((hit) => {
-    //   // Call onClick
-    //   if (hit.object instanceof navText) {
-    //     // (hit.object as navText).onClicked(event);
-    //     this.soundClick.play();
-    //   }
-    // });
     if (!this.turnHintUsed) {
       this.turnHintContainerAnimation.pause();
       let curOpacity = this.turnHintContainer.nativeElement.style.opacity;
@@ -424,13 +383,11 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
     this.camera.updateProjectionMatrix();
   }
   onClickPageIndicator(contentTag: ContentTag) {
-    console.log('clicked');
     this.navTexts.forEach((navText) => {
       if (
         navText.conetentTag === contentTag &&
         contentTag !== this.focusingNav?.conetentTag
       ) {
-        console.log(this.focusingNav);
         if (
           (this.focusingNav === undefined || this.doneFocus) &&
           !this.isFlying
@@ -455,10 +412,8 @@ export class CanvasBoxComponent implements OnInit, AfterViewInit {
       .onUpdate(() => this.camera.position.set(coords.x, coords.y, coords.z))
       .onStart(() => {
         this.controls.enabled = false;
-        console.log('start');
       })
       .onComplete(() => {
-        console.log('complete');
         this.focusingNav = navText;
         this.isFlying = false;
         this.focusedTimer = 0;

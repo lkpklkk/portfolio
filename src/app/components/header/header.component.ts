@@ -34,7 +34,7 @@ export class HeaderComponent {
     this.sideLogoLeft.nativeElement.addEventListener('mouseenter', () => {
       let curDegree = this.leftSpinningAnimation.progress;
       this.leftSpinningAnimation.pause();
-      console.log(curDegree);
+
       anime({
         targets: this.sideLogoLeft.nativeElement,
         rotate: (curDegree / 100) * 360 + 20,
@@ -50,7 +50,7 @@ export class HeaderComponent {
     this.sideLogoRight.nativeElement.addEventListener('mouseenter', () => {
       let curDegree = this.rightSpinningAnimation.progress;
       this.rightSpinningAnimation.pause();
-      console.log(curDegree);
+
       anime({
         targets: this.sideLogoRight.nativeElement,
         rotate: (curDegree / 100) * 360 + 20,

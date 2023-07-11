@@ -45,24 +45,38 @@
   transition: 0.8s;
 }
 #contentBar {
+  width: 100%;
+  max-width: 100%;
+
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1vh;
 }
-
+#contentImageContainer {
+  position: relative;
+  flex-basis: 40%;
+}
 #contentImage {
-  width: 40%;
+  width: 100%;
   height: auto;
   object-fit: contain;
 }
 
 #contentText {
-  width: 55%;
+  flex: 1 0 55%;
   max-height: 20vh;
   overflow-y: scroll;
   overflow-x: auto;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding: 1vw;
+  border-radius: 1vw;
+  transition: all 0.5s;
+}
+#contentText:hover {
+  backdrop-filter: blur(10px);
+  /* filter: invert(1); */
+  scale: 1.5;
+  background: rgba(252, 252, 252, 0.6);
+  /* transition: all 0.5s; */
 }
 
 #footerBar {
@@ -79,4 +93,8 @@
 .pageButton {
   width: 4vw;
   height: 4vw;
+}
+button:hover {
+  scale: 1.2;
+  transition: scale 0.2s;
 }

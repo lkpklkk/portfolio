@@ -27,12 +27,12 @@ export class navText extends THREE.Mesh {
     pageIndicatorDom: HTMLElement
   ) {
     super();
-    this.originalColor = new THREE.Color(0xffa559);
+    this.originalColor = new THREE.Color(0xf77d20);
     this.hoverColor = 'grey';
     this.geometry = new TextGeometry(text, {
       font: font,
-      size: 5,
-      height: 1,
+      size: 6,
+      height: 2,
       curveSegments: 12,
       bevelEnabled: true,
       bevelThickness: 0.05,
@@ -41,9 +41,9 @@ export class navText extends THREE.Mesh {
       bevelSegments: 5,
     });
     this.material = new THREE.MeshToonMaterial({
-      color: 0xffa559,
+      color: this.originalColor,
     });
-    this.scale.set(0.03, 0.03, 0.03);
+    this.scale.set(0.04, 0.04, 0.03);
     this.position.copy(position);
     this.positionSelf();
     this.active = false;
@@ -140,16 +140,7 @@ export class navText extends THREE.Mesh {
    */
   getVectorToTarget() {
     let projectionOntoPlane = this.getProjectionOntoPlane();
-    // let distanceBetweenCameraAndNavSphere =
-    //   this.canvaBox.camera.position.distanceTo(
-    //     this.position
-    //       .clone()
-    //       .normalize()
-    //       .multiplyScalar(this.canvaBox.camera.position.length())
-    //   );
-    // console.log(
-    //   'distanceBetweenCameraAndNavSphere: ' + distanceBetweenCameraAndNavSphere
-    // );
+
     return projectionOntoPlane;
   }
 }

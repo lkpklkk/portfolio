@@ -26,7 +26,6 @@ export class LoaderService {
   }
   checkLoaded() {
     for (const item of this.getLoadItems()) {
-      console.log(item);
       if (!item) {
         return;
       }

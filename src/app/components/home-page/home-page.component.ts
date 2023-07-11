@@ -38,7 +38,6 @@ export class HomePageComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
-    console.log(this.backgroundImage);
     if (this.backgroundImage.nativeElement.complete) {
       this.loadingService.setImgLoaded();
     }
