@@ -47,7 +47,7 @@
 #contentBar {
   width: 100%;
   max-width: 100%;
-
+  z-index: 2;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1vh;
